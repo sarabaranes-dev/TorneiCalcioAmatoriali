@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Squadre - Area Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Gestione Squadre</h1>
+        <p>Visualizza, modifica o elimina le squadre esistenti</p>
+        <div class="nav-header">
+            <a th:href="@{/admin/indexAdmin}"  class="btn btn-accent btn-sm">Torna alla Dashboard</a>
+            <a th:href="@{/admin/formNuovaSquadra}" class="btn btn-accent btn-sm">+ Nuova Squadra</a>
+        </div>
+    </header>
+
+    <hr/>
+
+    <main class="admin-container">
+        <div th:if="${deleteError != null}" id="error-alert" class="alert-error">
+            <p th:text="${deleteError}">Errore durante l'eliminazione.</p>
+        </div>
+        <div th:if="${squadre == null or #lists.isEmpty(squadre)}" class="alert-info">
+            <p>Nessuna squadra presente nel database.</p>
+        </div>
+
+        <div th:if="${squadre != null and !#lists.isEmpty(squadre)}" class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Logo</th> <th>Nome Squadra</th>
+                        <th>Sede</th>
+                        <th>Anno Fondazione</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="squadra : ${squadre}">
+                        <td>
+                            <img th:if="${squadra.logo != null}" th:src="@{/squadre/{id}/logo(id=${squadra.id})}" alt="Logo" style="width: 40px; height: 40px; object-fit: contain; border-radius: 4px;" />
+                            <span th:unless="${squadra.logo != null}" style="font-size: 0.8em; color: gray;">No Logo</span>
+                        </td>
+                        
+                        <td th:text="${squadra.nome}">Nome Squadra</td>
+                        <td th:text="${squadra.citta}">Sede</td>
+                        <td th:text="${squadra.annoFondazione}">2000</td>
+                        <td>
+                            <a th:href="@{/admin/formModificaSquadra/{id}(id=${squadra.id})}"  class="btn btn-accent btn-sm">Modifica</a>
+                            <a th:href="@{/squadre/{id}(id=${squadra.id})}"  class="btn btn-accent btn-sm">Visualizza</a>
+                            <a th:href="@{/admin/eliminaSquadra/{id}(id=${squadra.id})}"  class="btn btn-accent btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questa squadra?');">Elimina</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+     <a href="javascript:history.back()" class="btn btn-sm">Torna Indietro</a>
+    <footer>
+        <p class="Testo-footer">SIW Tornei Calcio 2026</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var alertBox = document.getElementById("error-alert");
+            if (alertBox) {
+                setTimeout(function() {
+                    alertBox.style.transition = "opacity 0.5s ease";
+                    alertBox.style.opacity = "0";
+                    setTimeout(function() {
+                        alertBox.style.display = "none";
+                    }, 500);
+                    
+                }, 3000); // 3000 ms = 3 secondi
+            }
+        });
+    </script>
+
+</body>
+</html>

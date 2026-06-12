@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Tornei - Area Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Gestione Tornei</h1>
+        <p>Visualizza, modifica o elimina i tornei esistenti</p>
+        <div class="nav-header">
+            <a th:href="@{/admin/indexAdmin}"  class="btn btn-accent btn-sm">Torna alla Dashboard</a>
+            <a th:href="@{/admin/formNuovoTorneo}"  class="btn btn-accent btn-sm">+ Nuovo Torneo</a>
+        </div>
+    </header>
+
+    <hr/>
+
+    <main class="admin-container">
+        <div th:if="${tornei == null or #lists.isEmpty(tornei)}" class="alert-info">
+            <p>Nessun torneo presente nel database.</p>
+        </div>
+
+        <div th:if="${tornei != null and !#lists.isEmpty(tornei)}" class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Nome Torneo</th>
+                        <th>Anno</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="torneo : ${tornei}">
+                        <td th:text="${torneo.nome}">Nome Torneo</td>
+                        <td th:text="${torneo.anno}">2026</td>
+                        <td>
+                            <a th:href="@{/admin/formModificaTorneo/{id}(id=${torneo.id})}"  class="btn btn-accent btn-sm">Modifica</a>
+                            <a th:href="@{/tornei/{id}(id=${torneo.id})}"  class="btn btn-accent btn-sm">Visualizza</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <a href="javascript:history.back()" class="btn btn-sm">Torna Indietro</a>
+    <footer>
+        <p class="Testo-footer">SIW Tornei Calcio</p>
+    </footer>
+
+</body>
+</html>

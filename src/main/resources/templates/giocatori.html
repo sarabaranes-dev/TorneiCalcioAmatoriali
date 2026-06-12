@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giocatori Registrati - TorneiCalcio</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <nav>
+        <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Giocatori</h1>
+        <p>Consulta l'elenco completo dei giocatori registrati nel sistema e visualizza i loro dettagli fisici.</p>
+    </header>
+
+    <section>
+        <div class="search-container" style="margin-bottom: 20px;">
+            <form th:action="@{/giocatori}" method="get">
+                
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="Cerca giocatore per cognome..." style="padding: 8px; width: 250px;" />
+                
+                <input type="hidden" name="page" value="1" />
+                
+                <button type="submit" class="btn btn-accent">Cerca</button>
+                <a th:href="@{/giocatori}" class="btn" style="text-decoration: none; margin-left: 5px;">Reset</a>
+            </form>
+        </div>
+
+        <div th:if="${giocatori == null or giocatori.isEmpty()}" class="info-empty">
+            Nessun giocatore trovato con i criteri inseriti.
+        </div>
+
+        <table th:if="${giocatori != null and !giocatori.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Cognome e Nome</th>
+                    <th>Ruolo</th>
+                    <th>Squadra</th>
+                    <th style="text-align: right;">Azione</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="giocatore : ${giocatori}">
+                    <td>
+                        <strong th:text="${giocatore.cognome}">Cognome</strong> <span th:text="${giocatore.nome}">Nome</span>
+                    </td>
+                    <td th:text="${giocatore.ruolo}">Ruolo</td>
+                    <td>
+                        <span th:text="${giocatore.squadra != null ? giocatore.squadra.nome : 'Svincolato'}">Squadra</span>
+                    </td>
+                    <td style="text-align: right;">
+                        <a th:href="@{/giocatori/{id}(id=${giocatore.id})}" class="btn btn-accent">Visualizza Profilo</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div th:if="${totalPages > 1}" class="pagination-container" style="margin-top: 20px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+            
+            <a th:if="${currentPage > 1}" 
+               th:href="@{/giocatori(page=${currentPage - 1}, keyword=${keyword})}" 
+               class="btn btn-sm">&laquo; Precedente </a>
+               
+            <span>Pagina <strong th:text="${currentPage}">1</strong> di <span th:text="${totalPages}">1</span></span>
+            
+            <a th:if="${currentPage < totalPages}" 
+               th:href="@{/giocatori(page=${currentPage + 1}, keyword=${keyword})}" 
+               class="btn btn-sm">Successivo &raquo;</a>
+        </div>
+        
+        <a th:href="@{/}" class="btn btn-back">Torna alla Home</a>
+    </section>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Giocatori - Area Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Gestione Giocatori</h1>
+        <p>Visualizza, modifica o elimina i giocatori nel sistema</p>
+        <div class="nav-header">
+            <a th:href="@{/admin/indexAdmin}"  class="btn btn-accent btn-sm">Torna alla Dashboard</a>
+            <a th:href="@{/admin/formNuovoGiocatore}" class="btn btn-accent btn-sm">+ Nuovo Giocatore</a>
+        </div>
+    </header>
+
+    <hr/>
+
+    <main class="admin-container">
+        <div th:if="${giocatori == null or #lists.isEmpty(giocatori)}" class="alert-info">
+            <p>Nessun giocatore presente nel database.</p>
+        </div>
+
+        <div th:if="${giocatori != null and !#lists.isEmpty(giocatori)}" class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Ruolo</th>
+                        <th>Data Nascita</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="giocatore : ${giocatori}">
+                        <td th:text="${giocatore.nome}">Nome</td>
+                        <td th:text="${giocatore.cognome}">Cognome</td>
+                        <td th:text="${giocatore.ruolo}">Ruolo</td>
+                        <td th:text="${#temporals.format(giocatore.dataNascita, 'dd/MM/yyyy')}">Data</td>
+                        <td>
+                            <a th:href="@{/admin/formModificaGiocatore/{id}(id=${giocatore.id})}"  class="btn btn-accent btn-sm">Modifica</a>
+                            <a th:href="@{/giocatori/{id}(id=${giocatore.id})}"  class="btn btn-accent btn-sm">Visualizza</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <a href="javascript:history.back()" class="btn btn-sm">Torna Indietro</a>
+    <footer>
+        <p class="Testo-footer">SIW Tornei Calcio</p>
+    </footer>
+
+</body>
+</html>

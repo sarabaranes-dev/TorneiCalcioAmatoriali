@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tornei Disponibili - TorneiCalcio</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
+
+    <nav>
+        <h1><a th:href="@{/}">TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h2>Campionati e Tornei</h2>
+        <p>Seleziona un torneo dall'elenco per visualizzare le informazioni ufficiali, il calendario dei match e la classifica in tempo reale.</p>
+    </header>
+
+    <section>
+        <div th:if="${tornei == null or tornei.isEmpty()}" class="empty-state">
+            Non ci sono tornei registrati al momento.
+        </div>
+
+        <table th:if="${tornei != null and !tornei.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Nome Competizione</th>
+                    <th class="text-right">Azione</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="torneo : ${tornei}">
+                    <td th:text="${torneo.nome}">Nome Torneo</td>
+                    <td class="text-right">
+                        <a th:href="@{/tornei/{id}(id=${torneo.id})}" class="btn btn-accent">Visualizza Dettaglio</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <br/>
+        <a th:href="@{/}" class="btn">Torna alla Home</a>
+    </section>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione - Tornei Calcio</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <nav>
+        <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/login}">Accedi</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Crea un nuovo Account</h1>
+        <p>Inserisci i tuoi dati per registrarti alla piattaforma.</p>
+    </header>
+
+    <section class="form-card-medium">
+        
+        <form th:action="@{/register}" th:object="${credenziali}" method="POST">
+            
+            <h2>Dati Personali</h2>
+            
+            <div class="flex-container">
+                <div class="col" style="border:none; padding:0; background:none;">
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" th:field="*{utente.nome}" required="required" />
+                        <span th:if="${#fields.hasErrors('utente.nome')}" th:errors="*{utente.nome}" class="error-message">Errore Nome</span>
+                    </div>
+                </div>
+                
+                <div class="col" style="border:none; padding:0; background:none;">
+                    <div class="form-group">
+                        <label>Cognome:</label>
+                        <input type="text" th:field="*{utente.cognome}" required="required" />
+                        <span th:if="${#fields.hasErrors('utente.cognome')}" th:errors="*{utente.cognome}" class="error-message">Errore Cognome</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" th:field="*{utente.email}" required="required" />
+                <span th:if="${#fields.hasErrors('utente.email')}" th:errors="*{utente.email}" class="error-message">Errore Email</span>
+            </div>
+            
+            <h2>Credenziali di Accesso</h2>
+            
+            <div class="flex-container">
+                <div class="col" style="border:none; padding:0; background:none;">
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" th:field="*{username}" required="required" />
+                        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message">Errore Username</span>
+                    </div>
+                </div>
+                
+                <div class="col" style="border:none; padding:0; background:none;">
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" th:field="*{password}" required="required" />
+                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message">Errore Password</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-accent">Conferma Registrazione</button>
+        </form>
+        
+        <div style="margin-top: 2rem;">
+            <p>Hai un account? <a th:href="@{/login}" class="text-team-link">Accedi qui</a></p>
+            <a th:href="@{/}" class="btn btn-back">Torna alla Home</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>

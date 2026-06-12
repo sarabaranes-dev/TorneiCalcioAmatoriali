@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sito Ufficiale Tornei di Calcio</title>
+    <link th:href="@{/css/stile.css}" rel="stylesheet"/>
+</head>
+<body>
+
+    <nav>
+        <h1><a th:href="@{/}">TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            
+            <li sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="btn btn-accent">Accedi</a>
+            </li>
+            <li sec:authorize="isAnonymous()">
+                <a th:href="@{/register}">Registrati</a>
+            </li>
+            
+            <li sec:authorize="isAuthenticated()">
+                <span class="user-greeting">
+                    Ciao, <strong sec:authentication="name" class="user-name">Utente</strong>
+                </span>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/logout}" class="btn-logout">Esci</a>
+            </li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Benvenuto sul Portale dei Tornei di Calcio</h1>
+        <p>Seleziona una delle sezioni sottostanti per esplorare i campionati, consultare i calendari, le classifiche e scoprire i dettagli di squadre e giocatori.</p>
+    </header>
+
+    <section>
+        
+        <div class="flex-container">
+            
+            <div class="col">
+                <h3>Tornei</h3>
+                <p>Visualizza l'elenco dei campionati attivi, le edizioni disponibili, i calendari specifici e le classifiche aggiornate.</p>
+                <br/>
+                <a th:href="@{/tornei}" class="btn">Esplora i Tornei</a>
+            </div>
+
+            <div class="col">
+                <h3>Squadre</h3>
+                <p>Scopri i club calcistici partecipanti, la loro storia, le citta di provenienza e consulta le rose dei giocatori.</p>
+                <br/>
+                <a th:href="@{/squadre}" class="btn">Visualizza le Squadre</a>
+            </div>
+            
+        </div>
+
+        <div class="flex-container">
+            
+            <div class="col">
+                <h3>Calendario Match</h3>
+                <p>Resta aggiornato su tutte le partite in programma, i luoghi degli incontri e i risultati in tempo reale.</p>
+                <br/>
+                <a href="http://localhost:5173" class="btn">Calendario Completo</a>
+            </div>
+
+            <div class="col">
+                <h3>Giocatori</h3>
+                <p>Consulta l'elenco completo dei calciatori registrati sulla piattaforma, i loro ruoli e le statistiche personali.</p>
+                <br/>
+                <a th:href="@{/giocatori}" class="btn">Cerca Giocatori</a>
+            </div>
+            
+        </div>
+
+    </section>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>

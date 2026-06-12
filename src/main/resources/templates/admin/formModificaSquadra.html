@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Squadra - Area Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Modifica Squadra</h1>
+        <p>Aggiorna le informazioni della squadra selezionata</p>
+        <div class="nav-header">
+            <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Torna alla Dashboard</a>
+        </div>
+    </header>
+
+    <hr/>
+
+    <main class="form-container">
+        <form th:action="@{/admin/squadre/modifica/{id}(id=${squadra.id})}" method="POST" th:object="${squadra}" enctype="multipart/form-data" class="admin-form">
+            
+            <input type="hidden" th:field="*{id}" />
+
+            <div th:if="${#fields.hasGlobalErrors()}" class="error-box">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
+            </div>
+
+            <div class="form-group">
+                <label for="nome">Nome della Squadra:</label>
+                <input type="text" id="nome" th:field="*{nome}" required />
+                <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="citta">Sede:</label>
+                <input type="text" id="citta" th:field="*{citta}" required />
+                <span th:if="${#fields.hasErrors('citta')}" th:errors="*{citta}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="annoFondazione">Anno di Fondazione:</label>
+                <input type="number" id="annoFondazione" th:field="*{annoFondazione}" required />
+                <span th:if="${#fields.hasErrors('annoFondazione')}" th:errors="*{annoFondazione}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="fileLogo">Logo del Club:</label>
+                
+                <div th:if="${squadra.logo != null}" style="margin-bottom: 10px;">
+                    <p style="font-size: 0.9em; margin-bottom: 5px; color: gray;">Logo attuale:</p>
+                    <img th:src="@{/squadre/{id}/logo(id=${squadra.id})}" alt="Logo Attuale" style="max-width: 80px; max-height: 80px; object-fit: contain; border: 1px solid #ccc; padding: 3px; background: white; border-radius: 4px;" />
+                </div>
+                
+                <input type="file" id="fileLogo" name="fileLogo" accept="image/*" />
+                <p style="font-size: 0.8em; color: gray; margin-top: 5px;">Lascia vuoto per mantenere il logo attuale.</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent btn-sm">Applica Modifiche</button>
+                <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Indietro</a>
+            </div>
+
+        </form>
+    </main>
+
+    <footer>
+        <p class="Testo-footer">SIW Tornei Calcio</p>
+    </footer>
+
+</body>
+</html>

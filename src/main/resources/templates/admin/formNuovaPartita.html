@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crea Nuova Partita - Area Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Registrazione Nuova Partita</h1>
+        <p>Inserisci i dati per registrare una nuova partita nel sistema</p>
+        <div class="nav-header">
+            <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Torna alla Dashboard</a>
+        </div>
+    </header>
+
+    <hr/>
+
+    <main class="form-container">
+        <form th:action="@{/admin/partite}" method="POST" th:object="${partita}" class="admin-form">
+            
+            <div th:if="${#fields.hasGlobalErrors()}" class="error-box">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
+            </div>
+
+            <div class="form-group">
+                <label for="torneo">Torneo:</label>
+                <select id="torneo" th:field="*{torneo}" required>
+                    <option value="">-- Seleziona Torneo --</option>
+                    <option th:each="torneo : ${tornei}" th:value="${torneo.id}" th:text="${torneo.nome}">Torneo</option>
+                </select>
+                <span th:if="${#fields.hasErrors('torneo')}" th:errors="*{torneo}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="squadraCasa">Squadra Casa:</label>
+                <select id="squadraCasa" th:field="*{squadraCasa}" required>
+                    <option value="">-- Seleziona Squadra --</option>
+                    <option th:each="squadra : ${squadre}" th:value="${squadra.id}" th:text="${squadra.nome}">Squadra</option>
+                </select>
+                <span th:if="${#fields.hasErrors('squadraCasa')}" th:errors="*{squadraCasa}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="squadraOspite">Squadra Ospite:</label>
+                <select id="squadraOspite" th:field="*{squadraOspite}" required>
+                    <option value="">-- Seleziona Squadra --</option>
+                    <option th:each="squadra : ${squadre}" th:value="${squadra.id}" th:text="${squadra.nome}">Squadra</option>
+                </select>
+                <span th:if="${#fields.hasErrors('squadraOspite')}" th:errors="*{squadraOspite}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="arbitro">Arbitro Designato:</label>
+                <select id="arbitro" th:field="*{arbitro}" required>
+                    <option value="">-- Seleziona Arbitro --</option>
+                    <option th:each="arbitro : ${arbitri}" 
+                            th:value="${arbitro.id}" 
+                            th:text="${arbitro.nome} + ' ' + ${arbitro.cognome} + ' (' + ${arbitro.codice_arbitrale} + ')'">Arbitro</option>
+                </select>
+                <span th:if="${#fields.hasErrors('arbitro')}" th:errors="*{arbitro}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="dataEora">Data e Ora:</label>
+                <input type="datetime-local" id="dataEora" th:field="*{dataEora}" required />
+                <span th:if="${#fields.hasErrors('dataEora')}" th:errors="*{dataEora}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="luogo">Luogo:</label>
+                <input type="text" id="luogo" th:field="*{luogo}" placeholder="Es: Stadio Olimpico" required />
+                <span th:if="${#fields.hasErrors('luogo')}" th:errors="*{luogo}" class="error-message"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent btn-sm">Salva Partita</button>
+                <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Annulla</a>
+            </div>
+
+        </form>
+    </main>
+
+    <footer>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Partite - Area Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Gestione Partite</h1>
+        <p>Visualizza, modifica risultati o elimina le partite</p>
+        <div class="nav-header">
+            <a th:href="@{/admin/indexAdmin}"  class="btn btn-accent btn-sm">Torna alla Dashboard</a>
+            <a th:href="@{/admin/formNuovaPartita}"  class="btn btn-accent btn-sm">+ Nuova Partita</a>
+        </div>
+    </header>
+
+    <hr/>
+
+    <main class="admin-container">
+        <div th:if="${partite == null or #lists.isEmpty(partite)}" class="alert-info">
+            <p>Nessuna partita presente nel database.</p>
+        </div>
+
+        <div th:if="${partite != null and !#lists.isEmpty(partite)}" class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Torneo</th>
+                        <th>Casa</th>
+                        <th>Ospite</th>
+                        <th>Data</th>
+                        <th>Stato</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="partita : ${partite}">
+                        <td th:text="${partita.torneo.nome}">Torneo</td>
+                        <td th:text="${partita.squadraCasa.nome}">Squadra</td>
+                        <td th:text="${partita.squadraOspite.nome}">Squadra</td>
+                        <td th:text="${#temporals.format(partita.dataEora, 'dd/MM/yyyy HH:mm')}">Data</td>
+                        <td>
+                            <span th:if="${partita.stato != null and partita.stato.name() == 'PLAYED'}" class="badge-status-played">Terminata</span>
+                            <span th:unless="${partita.stato != null and partita.stato.name() == 'PLAYED'}" class="badge-status-scheduled">In Programma</span>
+                        </td>
+                        <td>
+                            <a th:if="${partita.dataEora.isBefore(#temporals.createNow())}" 
+                            th:href="@{/admin/formRisultatoPartita/{id}(id=${partita.id})}"  
+                            class="btn btn-accent btn-sm">Risultato</a>
+                            
+                            <span th:unless="${partita.dataEora.isBefore(#temporals.createNow())}" 
+                                class="btn btn-sm" 
+                                style="background-color: var(--testo-grigio); cursor: not-allowed; opacity: 0.6;" 
+                                title="Non puoi inserire il risultato prima dello svolgimento del match">Bloccato</span>
+
+                            <a th:href="@{/partite/{id}(id=${partita.id})}"  class="btn btn-accent btn-sm">Visualizza</a>
+                            <a th:href="@{/admin/eliminaPartita/{id}(id=${partita.id})}"  class="btn btn-accent btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questa partita?');">Elimina</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+     <a href="javascript:history.back()" class="btn btn-sm">Torna Indietro</a>
+    <footer>
+        <p class="Testo-footer">SIW Tornei Calcio</p>
+    </footer>
+
+</body>
+</html>

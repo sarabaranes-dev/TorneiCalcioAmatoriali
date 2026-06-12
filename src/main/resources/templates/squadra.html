@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${squadra.nome} + ' - Dettaglio Squadra'">Dettaglio Squadra</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <nav>
+        <h1><a th:href="@{/}">TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/squadre}">Squadre</a></li>
+        </ul>
+    </nav>
+
+    <header style="display: flex; align-items: center; gap: 20px;">
+        <div th:if="${squadra.logo != null}">
+            <img th:src="@{/squadre/{id}/logo(id=${squadra.id})}" alt="Logo Squadra" style="max-width: 100px; max-height: 100px; object-fit: contain; border: 1px solid #ccc; padding: 5px; background: white; border-radius: 8px;" />
+        </div>
+        <div>
+            <h2 th:text="${squadra.nome}">Nome Squadra</h2>
+            <p><strong>Sede:</strong> <span th:text="${squadra.citta}">Roma</span> | <strong>Anno Fondazione:</strong> <span th:text="${squadra.annoFondazione}">1927</span></p>
+        </div>
+    </header>
+
+    <section>
+        <h2>Giocatori</h2>
+        
+        <div th:if="${squadra.giocatori == null or squadra.giocatori.isEmpty()}" class="empty-state">
+            Non ci sono giocatori tesserati per questa squadra al momento.
+        </div>
+        
+        <table th:if="${squadra.giocatori != null and !squadra.giocatori.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>Ruolo</th>
+                    <th class="text-right">Azione</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="giocatore : ${squadra.giocatori}">
+                    <td th:text="${giocatore.nome}">Nome</td>
+                    <td th:text="${giocatore.cognome}">Cognome</td>
+                    <td th:text="${giocatore.ruolo}">Ruolo</td>
+                    <td class="text-right">
+                        <a th:href="@{/giocatori/{id}(id=${giocatore.id})}" class="btn btn-accent">Scheda Tecnica</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br/>
+        <a th:href="@{/squadre}" class="btn">Torna all'elenco squadre</a>
+    </section>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>

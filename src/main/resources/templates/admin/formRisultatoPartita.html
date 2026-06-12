@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inserisci Risultato - Area Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Inserimento Risultato Partita</h1>
+        <p th:text="'Partita: ' + ${partita.squadraCasa.nome} + ' vs ' + ${partita.squadraOspite.nome}">Partita</p>
+        <div class="nav-header">
+            <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Torna alla Dashboard</a>
+        </div>
+    </header>
+
+    <hr/>
+
+    <main class="form-container">
+        <form th:action="@{/admin/salvaRisultato/{id}(id=${partita.id})}" method="POST" th:object="${partita}" class="admin-form">
+            
+            <div th:if="${#fields.hasGlobalErrors()}" class="error-box">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
+            </div>
+
+            <div class="form-group">
+                <label th:for="squadraCasaNome">Squadra Casa:</label>
+                <input type="text" th:id="squadraCasaNome" th:value="${partita.squadraCasa.nome}" disabled />
+            </div>
+
+            <div class="form-group">
+                <label for="goalsHome">Goal Squadra Casa:</label>
+                <input type="number" id="goalsHome" th:field="*{goalsHome}" placeholder="0" required />
+                <span th:if="${#fields.hasErrors('goalsHome')}" th:errors="*{goalsHome}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label th:for="squadraOspiteNome">Squadra Ospite:</label>
+                <input type="text" th:id="squadraOspiteNome" th:value="${partita.squadraOspite.nome}" disabled />
+            </div>
+
+            <div class="form-group">
+                <label for="goalsAway">Goal Squadra Ospite:</label>
+                <input type="number" id="goalsAway" th:field="*{goalsAway}" placeholder="0" required />
+                <span th:if="${#fields.hasErrors('goalsAway')}" th:errors="*{goalsAway}" class="error-message"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent btn-sm">Salva Risultato</button>
+                <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Annulla</a>
+            </div>
+
+        </form>
+    </main>
+
+    <footer>
+        <p class="Testo-footer">SIW Tornei Calcio</p>
+    </footer>
+
+</body>
+</html>

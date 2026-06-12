@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${partita.squadraCasa.nome} + ' vs ' + ${partita.squadraOspite.nome} + ' - Dettaglio Match'">Dettaglio Partita</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <nav>
+        <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/partite}">Calendario</a></li>
+        </ul>
+    </nav>
+
+    <header style="text-align: center; margin-top: 2rem;">
+        <p style="font-size: 1.2rem; color: var(--verde-scuro); margin-bottom: 1.5rem;">
+            Competizione: <strong th:text="${partita.torneo.nome}">Nome Torneo</strong>
+        </p>
+        
+        <div class="tabellone-match" style="display: flex; justify-content: center; align-items: center; gap: 3rem;">
+            <div class="team-tabellone">
+                <h2 th:text="${partita.squadraCasa.nome}" style="font-size: 2.2rem; margin: 0;">Squadra Casa</h2>
+            </div>
+            
+            <div class="score-tabellone">
+                <div th:if="${partita.stato != null and partita.stato.name() == 'PLAYED'}" class="punteggio-cifre">
+                    <span th:text="${partita.goalsHome}">2</span>
+                    <span>-</span>
+                    <span th:text="${partita.goalsAway}">1</span>
+                </div>
+                <div th:unless="${partita.stato != null and partita.stato.name() == 'PLAYED'}" class="ora-evento">
+                    <span th:text="${#temporals.format(partita.dataEora, 'HH:mm')}" style="font-size: 2.5rem; color: var(--verde-calcio); font-weight: bold;">20:45</span>
+                </div>
+            </div>
+            
+            <div class="team-tabellone">
+                <h2 th:text="${partita.squadraOspite.nome}" style="font-size: 2.2rem; margin: 0;">Squadra Ospite</h2>
+            </div>
+        </div>
+        
+        <div style="margin-top: 1.5rem;">
+            <span th:if="${partita.stato != null and partita.stato.name() == 'PLAYED'}" class="badge-status-played" style="background: var(--verde-chiaro); color: white; padding: 0.5rem 1rem; border-radius: 2rem; font-weight: bold;">Incontro Terminato</span>
+            <span th:unless="${partita.stato != null and partita.stato.name() == 'PLAYED'}" class="badge-next">Match in Programma</span>
+        </div>
+    </header>
+
+    <section>
+        <h3>Informazioni Incontro</h3>
+        <ul class="dettagli-lista">
+            <li><strong>Data dell'evento:</strong> <span th:text="${#temporals.format(partita.dataEora, 'dd/MM/yyyy')}">25/05/2026</span></li>
+            <li><strong>Ora d'inizio:</strong> <span th:text="${#temporals.format(partita.dataEora, 'HH:mm')} + ' l.c.'">20:45</span></li>
+            <li><strong>Stadio / Luogo:</strong> <span th:text="${partita.luogo}">Stadio Olimpico</span></li>
+            <li>
+                <strong>Arbitro:</strong> 
+                <span th:if="${partita.arbitro != null}" th:text="${partita.arbitro.nome} + ' ' + ${partita.arbitro.cognome} + ' (' + ${partita.arbitro.codice_arbitrale} + ')'">Francesco Galli (LAZ-ARB01)</span>
+                <span th:unless="${partita.arbitro != null}" class="info-empty">Non assegnato</span>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>Commenti al match</h3>
+        <p style="margin-bottom: 1.5rem;">Per vedere, aggiungere o modificare i commenti vai alla pagina dedicata. Devi essere autenticato per usare questa funzione.</p>
+        
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a th:href="@{/utente/partite/{id}/commenti(id=${partita.id})}" class="btn btn-accent">Vai ai commenti</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>

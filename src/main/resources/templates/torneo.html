@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${torneo.nome} + ' - Dettaglio Torneo'">Dettaglio Torneo</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <nav>
+        <h1><a th:href="@{/}">TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/tornei}">Tornei</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h2 th:text="${torneo.nome}">Nome Torneo</h2>
+        <p>Edizione: <span th:text="${torneo.anno}">2026</span></p>
+        <p th:text="${torneo.descrizione}">Descrizione dettagliata del torneo...</p>
+    </header>
+
+    <section>
+        <h2>Classifica</h2>
+        
+        <div th:if="${classifica == null or classifica.isEmpty()}" class="empty-state">
+            Nessuna squadra iscritta a questo torneo. Classifica non disponibile.
+        </div>
+        
+        <table th:if="${classifica != null and !classifica.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Pos</th>
+                    <th>Squadra</th>
+                    <th>Punti</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="partecipazione, classificaStat : ${classifica}">
+                    <td th:text="${classificaStat.count}">1</td>
+                    <td>
+                        <a th:href="@{/squadre/{id}(id=${partecipazione.squadra.id})}" th:text="${partecipazione.squadra.nome}" class="btn btn-sm">Nome Squadra</a>
+                    </td>
+                    <td><strong th:text="${partecipazione.punti}">0</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="note-text">* La classifica si aggiorna automaticamente in base ai punti registrati.</p>
+    </section>
+
+    <section>
+        <h2>Calendario Match</h2>
+        
+        <div th:if="${torneo.partite == null or torneo.partite.isEmpty()}" class="empty-state">
+            Non sono ancora state pianificate partite per questo torneo.
+        </div>
+        
+        <table th:if="${torneo.partite != null and !torneo.partite.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Data e Ora</th>
+                    <th>Incontro</th>
+                    <th>Risultato</th>
+                    <th>Luogo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="partita : ${torneo.partite}">
+                    <td th:text="${#temporals.format(partita.dataEora, 'dd/MM/yyyy HH:mm')}">Data</td>
+                    <td>
+                        <span th:text="${partita.squadraCasa.nome}">Casa</span>
+                        <strong>vs</strong>
+                        <span th:text="${partita.squadraOspite.nome}">Ospite</span>
+                    </td>
+                    <td>
+                        <span th:if="${partita.stato != null and partita.stato.name() == 'PLAYED'}" th:text="${partita.goalsHome + ' - ' + partita.goalsAway}">2 - 1</span>
+                        <span th:unless="${partita.stato != null and partita.stato.name() == 'PLAYED'}" class="status-pill">Da giocare</span>
+                    </td>
+                    <td th:text="${partita.luogo}">Stadio</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <br/>
+        <a th:href="@{/tornei}" class="btn">Torna all'elenco tornei</a>
+    </section>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>

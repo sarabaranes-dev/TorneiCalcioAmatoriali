@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Commenti - ' + ${partita.squadraCasa.nome} + ' vs ' + ${partita.squadraOspite.nome}">Commenti Partita</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
+            <ul class="nav-links">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/partite}">Calendario</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <section class="commenti-header">
+            <p class="match-torneo-provenienza">
+                Competizione: <strong th:text="${partita.torneo.nome}">Nome Torneo</strong>
+            </p>
+            <h1 th:text="'Commenti: ' + ${partita.squadraCasa.nome} + ' vs ' + ${partita.squadraOspite.nome}">Commenti Partita</h1>
+            <p>
+                <strong>Data:</strong> <span th:text="${#temporals.format(partita.dataEora, 'dd/MM/yyyy HH:mm')}">25/05/2026 20:45</span>
+                &nbsp;|&nbsp;
+                <strong>Luogo:</strong> <span th:text="${partita.luogo}">Stadio Olimpico</span>
+            </p>
+            <br/>
+            <a th:href="@{/partite/{id}(id=${partita.id})}" class="btn btn-sm">Torna al dettaglio partita</a>
+        </section>
+
+        <section class="commenti-match">
+            <h2>Elenco dei commenti</h2>
+            
+            <div th:if="${commenti == null or #lists.isEmpty(commenti)}" class="info-empty">
+                Non ci sono ancora commenti per questa partita. Scrivi il primo!
+            </div>
+            
+            <div th:if="${commenti != null and !#lists.isEmpty(commenti)}" class="commenti-lista">
+                <div th:each="commento : ${commenti}" class="commento-box">
+                    
+                    <div class="commento-header-card">
+                        <div class="autore-avatar">
+                            <span class="avatar-icon"></span>
+                            <span class="autore-commento" th:text="${commento.autore.nome} + ' ' + ${commento.autore.cognome}">Autore</span>
+                        </div>
+                        <span class="data-commento" th:text="${#temporals.format(commento.data, 'dd/MM/yyyy HH:mm')}">Data</span>
+                    </div>
+                    
+                    <div class="commento-corpo-card">
+                        <p class="commento-testo" th:text="${commento.testo}">Testo del commento</p>
+                    </div>
+                    
+                    <div class="commento-azione-card">
+                        
+                        <div th:if="${commento.autore != null and commento.autore.id.equals(currentUserId)}" class="area-modifica-attiva">
+                            <p class="nota-modifica">Puoi modificare qui sotto il tuo commento:</p>
+                            <form th:action="@{/utente/commenti/modifica/{id}(id=${commento.id})}" method="post" class="form-mini-modifica">
+                                <textarea name="testo" th:text="${commento.testo}" rows="2" required></textarea>
+                                <button type="submit" class="btn btn-sm">Aggiorna Messaggio</button>
+                            </form>
+                        </div>
+                        
+                        <div th:unless="${commento.autore != null and commento.autore.id.equals(currentUserId)}">
+                            <span class="commento-blocco">Solo l'autore è autorizzato a modificare questo commento.</span>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                </div>
+        </section>
+
+        <section class="nuovo-commento-box">
+            <h2>Lascia la tua opinione sul match</h2>
+            <form th:action="@{/utente/partite/{id}/commenti(id=${partita.id})}" th:object="${nuovoCommento}" method="post" class="admin-form-insert">
+                <div class="form-group">
+                    <label for="nuovo-testo">Scrivi un commento:</label>
+                    <textarea id="nuovo-testo" th:field="*{testo}" rows="4" placeholder="Es: Bellissima partita, vittoria meritata sul campo!..." required></textarea>
+                </div>
+                <button type="submit" class="btn">Invia Commento</button>
+            </form>
+        </section>
+
+        <br/>
+        <a href="javascript:history.back()" class="btn btn-sm">Torna Indietro</a>
+    </main>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>

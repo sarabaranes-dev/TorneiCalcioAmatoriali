@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crea Nuovo Giocatore - Area Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Creazione Nuovo Giocatore</h1>
+        <p>Inserisci i dati per registrare un nuovo calciatore nel sistema</p>
+        <div class="nav-header">
+            <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Torna alla Dashboard</a>
+        </div>
+    </header>
+
+    <hr/>
+
+    <main class="form-container">
+        <form th:action="@{/admin/giocatore}" method="POST" th:object="${giocatore}" class="admin-form">
+            
+            <div th:if="${#fields.hasGlobalErrors()}" class="error-box">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
+            </div>
+
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" th:field="*{nome}" placeholder="Es: Gianluca" required />
+                <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="cognome">Cognome:</label>
+                <input type="text" id="cognome" th:field="*{cognome}" placeholder="Es: Vialli" required />
+                <span th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="dataNascita">Data di Nascita:</label>
+                <input type="date" id="dataNascita" th:field="*{dataNascita}" required />
+                <span th:if="${#fields.hasErrors('dataNascita')}" th:errors="*{dataNascita}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="ruolo">Ruolo:</label>
+                <input type="text" id="ruolo" th:field="*{ruolo}" placeholder="Es: Attaccante" required />
+                <span th:if="${#fields.hasErrors('ruolo')}" th:errors="*{ruolo}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="altezza">Altezza (cm):</label>
+                <input type="number" id="altezza" th:field="*{altezza}" placeholder="Es: 180" />
+                <span th:if="${#fields.hasErrors('altezza')}" th:errors="*{altezza}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="squadra">Assegna a una Squadra:</label>
+                <select id="squadra" th:field="*{squadra}">
+                    <option value="">-- Attualmente Svincolato --</option>
+                    
+                    <option th:each="squadra : ${squadre}" 
+                            th:value="${squadra.id}" 
+                            th:text="${squadra.nome}">Nome Squadra</option>
+                </select>
+                <span th:if="${#fields.hasErrors('squadra')}" th:errors="*{squadra}" class="error-message"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent btn-sm">Salva Giocatore</button>
+                <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Annulla</a>
+            </div>
+
+        </form>
+    </main>
+
+    <footer>
+        <p class="Testo-footer">SIW Tornei Calcio</p>
+    </footer>
+
+</body>
+</html>

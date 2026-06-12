@@ -1,0 +1,219 @@
+/* ==========================================================================
+   1. CONFIGURAZIONE TEMA - IMPORTATO DA THYMELEAF
+   ========================================================================== */
+:root {
+    --verde-calcio: #1a7c3a;
+    --verde-scuro: #0d5c2a;
+    --verde-chiaro: #4caf50;
+    --giallo-coppa: #ffc107;
+    --sfondo-chiaro: #f4f7f4;
+    --testo-scuro: #1e293b;
+    --testo-grigio: #64748b;
+    --bianco: #ffffff;
+    --nero: #0f172a;
+    --bordo: #e2e8f0;
+    --ombra: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap');
+
+/* ==========================================================================
+   2. STILI COMPONENTI DI BASE (BOTTONI COPIATI DA THYMELEAF)
+   ========================================================================== */
+.btn {
+    display: inline-block;
+    background-color: var(--verde-calcio);
+    color: var(--bianco) !important;
+    padding: 0.8rem 1.8rem;
+    border-radius: 0.5rem;
+    text-decoration: none !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    background-color: var(--verde-scuro);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-accent {
+    background-color: var(--giallo-coppa);
+    color: var(--nero) !important;
+}
+
+.btn-accent:hover {
+    background-color: #eab308;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.85rem !important;
+    border-radius: 0.3rem !important;
+    box-shadow: none !important;
+}
+
+/* Contenitore del bottone Torna alla Home */
+.back-home-container {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+/* ==========================================================================
+   3. CONTENITORE PRINCIPALE
+   ========================================================================== */
+.dashboard-container {
+    width: 95%;
+    max-width: 55rem;
+    margin: 2rem auto;
+    font-family: 'Lato', 'Segoe UI', sans-serif;
+    color: var(--testo-scuro);
+}
+
+.dashboard-title {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--verde-scuro);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+/* ==========================================================================
+   4. BOTTONI DI FILTRO DENTRO REACT
+   ========================================================================== */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 2rem 0;
+}
+
+.btn-filtro {
+    display: inline-block;
+    background-color: var(--bordo);
+    color: var(--testo-scuro);
+    padding: 0.6rem 1.4rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-filtro:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-filtro.all {
+    background-color: var(--verde-calcio) !important;
+    color: var(--bianco) !important;
+}
+
+.btn-filtro.scheduled {
+    background-color: var(--giallo-coppa) !important;
+    color: var(--nero) !important;
+}
+
+.btn-filtro.played {
+    background-color: var(--verde-chiaro) !important;
+    color: var(--bianco) !important;
+}
+
+/* ==========================================================================
+   5. SCHEDE DELLE PARTITE
+   ========================================================================== */
+.partita-card {
+    background-color: var(--bianco);
+    border: 1px solid var(--bordo);
+    border-radius: 1rem;
+    box-shadow: var(--ombra);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border-left: 6px solid var(--verde-calcio);
+    transition: transform 0.2s ease;
+}
+
+.partita-card:hover {
+    transform: scale(1.01);
+}
+
+.partita-header {
+    background-color: #f8fafc;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.85rem;
+    color: var(--testo-grigio);
+    border-bottom: 1px solid var(--bordo);
+}
+
+.partita-header strong {
+    color: var(--verde-scuro);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.partita-matchup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.squadra-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    width: 40%;
+}
+
+.squadra-casa {
+    text-align: right;
+    color: var(--testo-scuro);
+}
+
+.squadra-ospite {
+    text-align: left;
+    color: var(--testo-scuro);
+}
+
+.partita-risultato {
+    width: 15%;
+    min-width: 4.5rem;
+    text-align: center;
+    background-color: var(--verde-scuro);
+    color: var(--giallo-coppa);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+}
+
+/* Correzione Layout del Footer */
+.partita-footer {
+    background-color: #fafafa;
+    padding: 0.75rem 1.5rem;
+    border-top: 1px solid var(--bordo);
+    display: flex;
+    justify-content: space-between; /* Spinge lo stadio a sinistra e il bottone a destra */
+    align-items: center;
+}
+
+.stadio-testo {
+    font-size: 0.85rem;
+    color: var(--testo-grigio);
+    font-style: italic;
+}

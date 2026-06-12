@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Tornei Calcio</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <nav>
+        <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Accedi al Portale</h1>
+        <p>Inserisci le tue credenziali per accedere alle funzioni riservate.</p>
+    </header>
+
+    <section class="form-card-small">
+        <div th:if="${param.error}" class="info-empty" style="border-left-color: #d32f2f; color: #d32f2f;">
+            Username o password errati!
+        </div>
+
+        <form th:action="@{/login}" method="POST">
+            <div class="form-group">
+                <label>Username:</label>
+                <input type="text" name="username" required="required" />
+            </div>
+            
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" required="required" />
+            </div>
+            
+            <button type="submit" class="btn">Accedi al Sistema</button>
+        </form>
+        
+        <div class="flex-container">
+            <a th:href="@{/}" class="btn btn-back">Torna alla Home</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>

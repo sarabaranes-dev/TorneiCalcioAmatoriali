@@ -1,0 +1,519 @@
+/* ==========================================================================
+   1. VARIABILI CSS - TEMA CALCIO PROFESSIONALE
+   ========================================================================== */
+:root {
+    --verde-calcio: #1a7c3a;
+    --verde-scuro: #0d5c2a;
+    --verde-chiaro: #4caf50;
+    --giallo-coppa: #ffc107;
+    --sfondo-chiaro: #f4f7f4;
+    --testo-scuro: #1e293b;
+    --testo-grigio: #64748b;
+    --bianco: #ffffff;
+    --nero: #0f172a;
+    --bordo: #e2e8f0;
+    --ombra: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* ==========================================================================
+   2. RESET & BASE 
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 100%; /* 16px */
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Lato', 'Segoe UI', sans-serif;
+    background-color: var(--sfondo-chiaro);
+    color: var(--testo-scuro);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   3. LAYOUT FLUIDO 
+   ========================================================================== */
+header, section, footer {
+    width: 95%; /* Occupa quasi tutto lo spazio orizzontale */
+    max-width: 90rem; /* Limite massimo per monitor ultra-wide (~1440px) */
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+nav {
+    width: 100%; 
+    padding: 1rem 5%; 
+    border-radius: 0; 
+}
+
+/* ==========================================================================
+   4. NAVIGAZIONE 
+   ========================================================================= */
+nav {
+    background-color: var(--verde-calcio);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: var(--ombra);
+    margin-top: 0;
+}
+
+nav h1 a {
+    color: var(--bianco);
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+nav ul li a {
+    color: var(--bianco);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--giallo-coppa);
+}
+
+/* ==========================================================================
+   5. HEADER & SEZIONI
+   ========================================================================== */
+header {
+    padding: 3rem 0;
+    text-align: left; /* Allineato a sinistra per un look moderno */
+}
+
+header h1, header h2 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--verde-scuro);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+section {
+    background-color: var(--bianco);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--ombra);
+    margin-bottom: 2rem;
+}
+
+section h2 {
+    font-family: 'Montserrat', sans-serif;
+    border-left: 6px solid var(--giallo-coppa);
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--verde-calcio);
+}
+
+/* ==========================================================================
+   6. BOTTONI 
+   ========================================================================== */
+.btn, button[type="submit"] {
+    display: inline-block;
+    background-color: var(--verde-calcio);
+    color: var(--bianco) !important;
+    padding: 0.8rem 1.8rem;
+    border-radius: 0.5rem;
+    text-decoration: none !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover, button[type="submit"]:hover {
+    background-color: var(--verde-scuro);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Variante Oro per azioni principali */
+.btn-accent {
+    background-color: var(--giallo-coppa);
+    color: var(--nero) !important;
+}
+
+.btn-accent:hover {
+    background-color: #eab308;
+}
+
+/* ==========================================================================
+   7. TABELLE (Stile Campo da Calcio)
+   ========================================================================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+
+table thead {
+    background-color: var(--verde-calcio);
+    color: var(--bianco);
+}
+
+table th {
+    padding: 1rem;
+    text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--bordo);
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f8faf8; /* Effetto righe erba tagliata */
+}
+
+table tbody tr:hover {
+    background-color: #ecfdf5;
+}
+
+/* ==========================================================================
+   8. COMPONENTI EXTRA
+   ========================================================================== */
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.col {
+    flex: 1 1 calc(50% - 1rem); /* Due colonne su desktop */
+    min-width: 20rem;
+    background-color: var(--sfondo-chiaro);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border-bottom: 4px solid var(--verde-calcio);
+}
+
+.info-empty {
+    padding: 1.5rem;
+    background-color: #fefce8;
+    border-left: 4px solid var(--giallo-coppa);
+    color: #854d0e;
+    font-style: italic;
+    border-radius: 0.5rem;
+}
+
+footer {
+    padding: 2rem;
+    text-align: center;
+    color: var(--testo-grigio);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--bordo);
+}
+
+/* ==========================================================================
+   9. RESPONSIVE 
+   ========================================================================== */
+@media (max-width: 48rem) { /* 768px */
+    header h1 { font-size: 2rem; }
+    .col { flex: 1 1 100%; }
+    nav { flex-direction: column; gap: 1rem; text-align: center; }
+    nav ul { gap: 1rem; font-size: 0.9rem; }
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 0.3rem;
+    box-shadow: none; /* Rende il bottone piatto e pulito nella tabella */
+}
+
+/* ==========================================================================
+   10. MODULI E FORM (Login e Registrazione)
+   ========================================================================== */
+
+/* Classi per limitare la larghezza delle schede (evitano che il form sia largo quanto tutta la pagina) */
+.form-card-small {
+    max-width: 35rem; /* Ideale per il Login */
+    margin: 2rem auto;
+}
+
+.form-card-medium {
+    max-width: 55rem; /* Ideale per la Registrazione */
+    margin: 2rem auto;
+}
+
+/* Spaziatura tra i campi del modulo */
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+/* Stile delle etichette (Label) */
+label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--verde-scuro);
+}
+
+/* Stile universale per i campi di inserimento */
+input[type="text"], 
+input[type="password"], 
+input[type="email"], 
+textarea,
+select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--bordo);
+    border-radius: 0.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--testo-scuro);
+    transition: border-color 0.2s ease;
+}
+
+/* Effetto quando si clicca dentro un campo */
+input:focus {
+    outline: none;
+    border-color: var(--verde-calcio);
+    box-shadow: 0 0 0 3px rgba(26, 124, 58, 0.1);
+}
+
+/* Messaggi di errore (Thymeleaf errors) */
+.error-message {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: block;
+    margin-top: 0.4rem;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+
+/* ==========================================================================
+   RILINEAMENTO E CENTRATURA FORM AMMINISTRATIVI
+   ========================================================================== */
+
+/* Centra il contenitore principale nella pagina */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    width: 100%;
+}
+
+/* Modella la scheda del modulo: compatta, bianca, centrata e con ombra morbida */
+.admin-form {
+    background-color: var(--bianco);
+    width: 100%;
+    max-width: 32rem; /* Dimensione ideale (~512px) per non far disperdere i campi */
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: var(--ombra);
+    border-top: 5px solid var(--verde-calcio); /* Richiamo al tema principale */
+}
+
+/* Spaziatura interna e allineamento dei singoli gruppi di input */
+.form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Ottimizzazione dei bottoni di azione in fondo al modulo */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    margin-top: 2rem;
+    border-top: 1px solid var(--bordo);
+    padding-top: 1.5rem;
+}
+
+/* Forza i bottoni del form a occupare spazi proporzionati */
+.form-actions .btn, 
+.form-actions button[type="submit"] {
+    flex: 1;
+    text-align: center;
+    padding: 0.7rem 1rem;
+}
+
+/* Rende uniforme l'allineamento degli header sopra i form */
+.admin-header {
+    width: 95%;
+    max-width: 32rem; /* Allinea l'ampiezza dell'intestazione a quella del form sottostante */
+    margin: 2rem auto 0 auto;
+    text-align: left;
+}
+
+.admin-header h1 {
+    font-size: 2.2rem;
+    color: var(--verde-scuro);
+}
+
+/* Barra orizzontale di separazione discreta ed elegante */
+hr {
+    border: none;
+    border-top: 1px solid var(--bordo);
+    max-width: 32rem;
+    margin: 1.5rem auto;
+}
+
+/* Scatola degli errori globali interna al form */
+.error-box {
+    background-color: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: #991b1b;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+
+/* ==========================================================================
+   STILE SEZIONE COMMENTI (LOOK SOCIAL / FORUM PROFESSIONALE)
+   ========================================================================== */
+
+/* Spaziatura tra i vari commenti della lista */
+.commenti-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Scatola principale di un singolo commento */
+.commento-box {
+    background-color: var(--bianco);
+    border: 1px solid var(--bordo);
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Intestazione del commento (Sfondo grigio chiarissimo, separa autore e data) */
+.commento-header-card {
+    background-color: #f8fafc;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--bordo);
+}
+
+/* Contenitore dell'avatar e del nome autore */
+.autore-avatar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.avatar-icon {
+    font-size: 1.1rem;
+}
+
+.autore-commento {
+    font-weight: 700;
+    color: var(--verde-scuro);
+}
+
+.data-commento {
+    font-size: 0.85rem;
+    color: var(--testo-grigio);
+}
+
+/* Spazio dedicato al testo del commento */
+.commento-corpo-card {
+    padding: 1.25rem;
+    background-color: var(--bianco);
+}
+
+.commento-testo {
+    font-size: 1rem;
+    color: var(--testo-scuro);
+    white-space: pre-line; /* Mantiene gli a capo digitati dall'utente */
+}
+
+/* Sezione in fondo al commento per le azioni (modifica o blocco) */
+.commento-azione-card {
+    background-color: #fafafa;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid #f1f5f9;
+    font-size: 0.85rem;
+}
+
+/* Testo discreto per i commenti non modificabili */
+.commento-blocco {
+    color: var(--testo-grigio);
+    font-style: italic;
+}
+
+/* Area di modifica attiva (per l'autore del messaggio) */
+.area-modifica-attiva {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nota-modifica {
+    font-weight: 600;
+    color: #b45309; /* Colore ambra/avviso per la modifica */
+}
+
+.form-mini-modifica {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+/* Box per l'inserimento del NUOVO commento in fondo */
+.nuovo-commento-box {
+    background-color: var(--bianco);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--ombra);
+    margin-top: 3rem;
+    border-left: 5px solid var(--verde-calcio);
+}
+
+.nuovo-commento-box h2 {
+    margin-bottom: 1rem;
+    color: var(--verde-scuro);
+}

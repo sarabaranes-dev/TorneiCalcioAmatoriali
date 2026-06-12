@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crea Nuovo Torneo - Area Admin</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <header class="admin-header">
+        <h1>Creazione Nuovo Torneo</h1>
+        <p>Inserisci i dati per registrare un nuovo torneo nel sistema</p>
+        <div class="nav-header">
+            <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Torna alla Dashboard</a>
+        </div>
+    </header>
+
+    <hr/>
+
+    <main class="form-container">
+        <form th:action="@{/admin/tornei}" method="POST" th:object="${torneo}" class="admin-form">
+            
+            <div th:if="${#fields.hasGlobalErrors()}" class="error-box">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
+            </div>
+
+            <div class="form-group">
+                <label for="nome">Nome del Torneo:</label>
+                <input type="text" id="nome" th:field="*{nome}" placeholder="Es: Champions League" required />
+                <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="anno">Anno:</label>
+                <input type="number" id="anno" th:field="*{anno}" placeholder="Es: 2026" required />
+                <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="descrizione">Descrizione:</label>
+                <textarea id="descrizione" th:field="*{descrizione}" placeholder="Inserisci una breve descrizione del torneo..."></textarea>
+                <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}" class="error-message"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent btn-sm">Salva Torneo</button>
+                <a th:href="@{/admin/indexAdmin}" class="btn btn-accent btn-sm">Annulla</a>
+            </div>
+
+        </form>
+    </main>
+
+    <footer>
+        <p class="Testo-footer">SIW Tornei Calcio</p>
+    </footer>
+
+</body>
+</html>

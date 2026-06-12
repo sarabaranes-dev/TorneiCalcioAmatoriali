@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Profilo ' + ${giocatore.nome} + ' ' + ${giocatore.cognome}">Profilo Giocatore</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <nav>
+        <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/giocatori}">Giocatori</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1 th:text="${giocatore.nome} + ' ' + ${giocatore.cognome}">Nome Cognome Giocatore</h1>
+        <p>
+            <span class="badge-ruolo" th:text="${giocatore.ruolo}">Attaccante</span>
+        </p>
+    </header>
+
+    <section>
+        <h2>Dettagli Personali</h2>
+        <ul class="dettagli-lista">
+            <li>
+                <strong>Data di Nascita:</strong> 
+                <span th:text="${giocatore.dataNascita != null} ? ${#temporals.format(giocatore.dataNascita, 'dd/MM/yyyy')} : 'Non specificata'">01/01/2000</span>
+            </li>
+            <li>
+                <strong>Altezza:</strong> 
+                <span th:text="${giocatore.altezza != null} ? ${giocatore.altezza} + ' cm' : 'Non specificata'">180 cm</span>
+            </li>
+            <li>
+                <strong>Squadra di appartenenza:</strong> 
+                <span th:if="${giocatore.squadra != null}">
+                    <!-- Convertito in un bottone dorato per accedere direttamente al club -->
+                    <a th:href="@{/squadre/{id}(id=${giocatore.squadra.id})}" th:text="${giocatore.squadra.nome}" class="btn btn-accent">Nome Club</a>
+                </span>
+                <span th:unless="${giocatore.squadra != null}" class="svincolato">Attualmente Svincolato</span>
+            </li>
+        </ul>
+
+        <a href="javascript:history.back()" class="btn btn-back">Torna Indietro</a>
+    </section>
+
+    <footer>
+        <p>Progetto SIW Tornei di Calcio</p>
+    </footer>
+
+</body>
+</html>
