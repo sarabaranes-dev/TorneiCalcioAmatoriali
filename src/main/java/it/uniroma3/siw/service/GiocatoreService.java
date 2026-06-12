@@ -44,6 +44,7 @@ public class GiocatoreService {
         return giocatoreRepository.existsByNomeAndCognomeAndDataNascita(nome, cognome, data);
     }
     
+    @Transactional
     public Page<Giocatore> getGiocatoriCercatiEPaginati(String keyword, int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize); // Spring conta le pagine da 0
         

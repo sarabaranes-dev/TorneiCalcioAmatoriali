@@ -18,7 +18,7 @@
     <hr/>
 
     <main class="form-container">
-        <form th:action="@{/admin/giocatore}" method="POST" th:object="${giocatore}" class="admin-form">
+        <form th:action="@{/admin/giocatori}" method="POST" th:object="${giocatore}" class="admin-form">
             
             <div th:if="${#fields.hasGlobalErrors()}" class="error-box">
                 <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
