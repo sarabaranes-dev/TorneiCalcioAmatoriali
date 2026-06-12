@@ -19,8 +19,18 @@
     <hr/>
 
     <main class="admin-container">
+        <!-- Form di ricerca -->
+        <div class="search-container" style="margin-bottom: 20px;">
+            <form th:action="@{/admin/giocatori}" method="get">
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="Cerca giocatore per cognome..." style="padding: 8px; width: 250px;" />
+                <input type="hidden" name="page" value="1" />
+                <button type="submit" class="btn btn-accent">Cerca</button>
+                <a th:href="@{/admin/giocatori}" class="btn" style="text-decoration: none; margin-left: 5px;">Reset</a>
+            </form>
+        </div>
+
         <div th:if="${giocatori == null or #lists.isEmpty(giocatori)}" class="alert-info">
-            <p>Nessun giocatore presente nel database.</p>
+            <p>Nessun giocatore trovato con i criteri inseriti.</p>
         </div>
 
         <div th:if="${giocatori != null and !#lists.isEmpty(giocatori)}" class="table-container">
@@ -47,6 +57,19 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Paginazione -->
+        <div th:if="${totalPages > 1}" class="pagination-container" style="margin-top: 20px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+            <a th:if="${currentPage > 1}" 
+               th:href="@{/admin/giocatori(page=${currentPage - 1}, keyword=${keyword})}" 
+               class="btn btn-sm">&laquo; Precedente </a>
+               
+            <span>Pagina <strong th:text="${currentPage}">1</strong> di <span th:text="${totalPages}">1</span></span>
+            
+            <a th:if="${currentPage < totalPages}" 
+               th:href="@{/admin/giocatori(page=${currentPage + 1}, keyword=${keyword})}" 
+               class="btn btn-sm">Successivo &raquo;</a>
         </div>
     </main>
     <a href="javascript:history.back()" class="btn btn-sm">Torna Indietro</a>

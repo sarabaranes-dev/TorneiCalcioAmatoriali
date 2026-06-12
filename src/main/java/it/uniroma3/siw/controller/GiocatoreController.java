@@ -70,8 +70,17 @@ public class GiocatoreController {
     
     // Salva il giocatore nel database
     @GetMapping(value="/admin/giocatori")
-    public String getGiocatoriAdmin(Model model) {
-        model.addAttribute("giocatori", this.giocatoreService.findAll());
+    public String getGiocatoriAdmin(@RequestParam(value = "keyword", required = false) String keyword,
+                                     @RequestParam(value = "page", defaultValue = "1") int page,
+                                     Model model) {
+        int pageSize = 5; 
+        
+        Page<Giocatore> pageGiocatori = this.giocatoreService.getGiocatoriCercatiEPaginati(keyword, page, pageSize);
+        
+        model.addAttribute("giocatori", pageGiocatori.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pageGiocatori.getTotalPages());
+        model.addAttribute("keyword", keyword);
         return "admin/listaGiocatori"; // Corretto: senza .html
     }
 
