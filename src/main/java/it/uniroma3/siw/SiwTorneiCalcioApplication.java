@@ -23,6 +23,7 @@ public class SiwTorneiCalcioApplication implements CommandLineRunner{
 		Long id = 1L;
 
 		squadraService.testLazy(id);
+		squadraService.testEager(id);
 		squadraService.testJoinFetch(id);
 		squadraService.testEntityGraph(id);
 	}
@@ -31,14 +32,15 @@ public class SiwTorneiCalcioApplication implements CommandLineRunner{
 
 /* caso d'uso: caricare una squadra e i suoi giocatori.
 1. LAZY: carica la squadra, ma non i giocatori.  
-   StopWatch: 043850375 ns  (≈ 43 ms)
 
-2. JOIN FETCH: carica la squadra e i giocatori in un'unica query, utilizzando un JOIN,
+2. EAGER: carica immediatamente la collezione dei giocatori quando viene caricata la squadra.
+   il tempo di esecuzione è simile a quello della strategia LAZY solitamente,
+   ma carica dati anche quando non necessari e
+   può generare join molto pesanti
+   
+3. JOIN FETCH: carica la squadra e i giocatori in un'unica query, utilizzando un JOIN,
    più efficiente perché riduce il numero di query al database. 
-   StopWatch: 020707333 ns  (≈ 20 ms)
 
-
-3. ENTITY GRAPH: simile a JOIN FETCH, ma più flessibile. definire un "graph" specifica quali relazioni caricare.
+4. ENTITY GRAPH: simile a JOIN FETCH, ma più flessibile. definire un "graph" specifica quali relazioni caricare.
    query ottimizzata con un left join
-   StopWatch: 007926041 ns  (≈ 7 ms)
 */

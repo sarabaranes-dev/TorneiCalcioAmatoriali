@@ -57,6 +57,16 @@ public class SquadraService {
 	}
 
 	@Transactional
+	public void testEager(Long id) {
+		StopWatch sw = new StopWatch();
+		sw.start("EAGER");
+		Squadra s = squadraRepository.findById(id).get();
+		s.getGiocatori().size();
+		sw.stop();
+		System.out.println(sw.prettyPrint());
+	}
+
+	@Transactional
 	public void testJoinFetch(Long id) {
 		StopWatch sw = new StopWatch();
 		sw.start("JOIN FETCH");
@@ -73,5 +83,8 @@ public class SquadraService {
 		sw.stop();
 		System.out.println(sw.prettyPrint());
 	}
+
+	
+
 
 }
