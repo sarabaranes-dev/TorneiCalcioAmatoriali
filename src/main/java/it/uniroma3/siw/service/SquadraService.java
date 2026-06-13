@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import it.uniroma3.siw.model.Squadra;
 import it.uniroma3.siw.repository.SquadraRepository;
@@ -24,7 +25,7 @@ public class SquadraService {
 	}
 	
 	//Caso d'uso: visualizzazione del dettaglio di una squadra (con giocatori)
-	@Transactional //mantiene aperta la connessione al database finché non hai finito di leggere tutti i dati
+	@Transactional 
 	public Squadra findById(Long id) {
 		return squadraRepository.findById(id).get();
 	}
@@ -45,5 +46,32 @@ public class SquadraService {
 	}
 	
     
-	
+	@Transactional
+	public void testLazy(Long id) {
+		StopWatch sw = new StopWatch();
+		sw.start("LAZY");
+		Squadra s = squadraRepository.findById(id).get();
+		s.getGiocatori().size(); // forza il lazy loading
+		sw.stop();
+		System.out.println(sw.prettyPrint());
+	}
+
+	@Transactional
+	public void testJoinFetch(Long id) {
+		StopWatch sw = new StopWatch();
+		sw.start("JOIN FETCH");
+		Squadra s = squadraRepository.findByIdWithGiocatori(id);
+		sw.stop();
+		System.out.println(sw.prettyPrint());
+	}
+
+	@Transactional
+	public void testEntityGraph(Long id) {
+		StopWatch sw = new StopWatch();
+		sw.start("ENTITY GRAPH");
+		Squadra s = squadraRepository.findByIdEntityGraph(id);
+		sw.stop();
+		System.out.println(sw.prettyPrint());
+	}
+
 }
