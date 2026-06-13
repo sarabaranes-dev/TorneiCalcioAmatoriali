@@ -18,7 +18,7 @@
     <hr/>
 
     <main class="form-container">
-        <form th:action="@{/admin/giocatore/modifica/{id}(id=${giocatore.id})}" method="POST" th:object="${giocatore}" class="admin-form">
+        <form th:action="@{/admin/giocatori/modifica/{id}(id=${giocatore.id})}" method="POST" th:object="${giocatore}" class="admin-form">
             
             <input type="hidden" th:field="*{id}" />
 

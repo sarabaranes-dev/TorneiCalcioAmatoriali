@@ -93,7 +93,7 @@ public class GiocatoreController {
             return "redirect:/giocatori/" + giocatore.getId(); // I redirect rimangono invariati
         } else {
             model.addAttribute("squadre", this.squadraService.findAll());
-            return "admin/formNuovoGiocatore"; // Corretto: senza .html
+            return "admin/formNuovoGiocatore"; 
         }
     }
     
