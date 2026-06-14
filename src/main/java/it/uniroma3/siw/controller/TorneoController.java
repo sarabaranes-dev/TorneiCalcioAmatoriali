@@ -46,12 +46,13 @@ public class TorneoController {
      * "visualizzazione della classifica del torneo"
      * URL: http://localhost:8080/tornei/1
      */
+
 	@GetMapping("/tornei/{id}")
-	public String getTorneo(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("torneo", this.torneoService.findById(id));
-		model.addAttribute("classifica",  this.torneoService.getClassificaTorneo(id));
-		return "torneo.html";
-	}
+    public String getTorneo(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("torneo", this.torneoService.findByIdWithPartite(id));
+        model.addAttribute("classifica", this.torneoService.getClassificaTorneo(id));
+        return "torneo.html";
+    }
 	
 	/*FUNZIONALITA RISERVATE ALL'ADMIN*/
 	

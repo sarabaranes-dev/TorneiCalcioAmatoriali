@@ -35,9 +35,15 @@ public class TorneoService {
 	}
 	
 	// Caso d'uso: visualizzazione del dettaglio di un torneo
-	public Torneo findById(Long id) {
+	@Transactional
+    public Torneo findById(Long id) {
 		return torneoRepository.findById(id).orElse(null);
 	}
+
+    @Transactional
+    public Torneo findByIdWithPartite(Long id) {
+        return torneoRepository.findByIdWithPartiteAndSquadre(id).orElse(null);
+    }
 	
 	// Caso d'uso: visualizzazione delle squadre partecipanti
     @Transactional 
