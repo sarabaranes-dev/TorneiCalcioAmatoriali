@@ -20,10 +20,10 @@ public interface PartecipazioneRepository extends CrudRepository<Partecipazione,
             + "WHERE p.torneo_id = :torneoId "
             + "ORDER BY s.nome ASC", nativeQuery=true)
     public List<Squadra> findSquadreInTorneo(@Param("torneoId") Long id);
-    
-    @Query(value="SELECT * "
-            + "FROM partecipazione p "
-            + "WHERE p.torneo_id = :torneoId "
-            + "ORDER BY p.punti DESC", nativeQuery=true)
+
+    @Query("SELECT p FROM Partecipazione p " +
+           "LEFT JOIN FETCH p.squadra " +
+           "WHERE p.torneo.id = :torneoId " +
+           "ORDER BY p.punti DESC")
     public List<Partecipazione> findClassificaByTorneoId(@Param("torneoId") Long id);
 }

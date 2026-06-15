@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.transaction.Transactional;
 import it.uniroma3.siw.controller.validator.TorneoValidator;
 import it.uniroma3.siw.model.Torneo;
 import it.uniroma3.siw.service.TorneoService;
@@ -47,6 +48,7 @@ public class TorneoController {
      * URL: http://localhost:8080/tornei/1
      */
 
+	@Transactional
 	@GetMapping("/tornei/{id}")
     public String getTorneo(@PathVariable("id") Long id, Model model) {
         model.addAttribute("torneo", this.torneoService.findByIdWithPartite(id));

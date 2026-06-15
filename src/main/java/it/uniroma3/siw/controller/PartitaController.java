@@ -119,17 +119,14 @@ public class PartitaController {
 	/**
      salvataggio
      */
-	
 	@PostMapping("/admin/salvaRisultato/{id}")
-	public String salvaRisultato(@PathVariable("id") Long id, @ModelAttribute("partita") Partita partitaForm) {
-		Partita partita = this.partitaService.findById(id);
-		partita.setGoalsHome(partitaForm.getGoalsHome());
-	    partita.setGoalsAway(partitaForm.getGoalsAway());
-		 
-		this.partitaService.savePartita(partita); 
-		
-		return "redirect:/partite/" + partita.getId();
-	}
+    public String salvaRisultato(@PathVariable("id") Long id, @ModelAttribute("partita") Partita partitaForm) {
+        // MODIFICA: Invece di fare il find e il save qui nel controller, 
+        // deleghiamo tutto al metodo transazionale del service che assegna anche i punti!
+        this.partitaService.aggiornaRisultato(id, partitaForm.getGoalsHome(), partitaForm.getGoalsAway());
+        
+        return "redirect:/partite/" + id;
+    }
 	
 	/**
      * CASO D'USO: "eliminazione di una partita"
