@@ -8,7 +8,7 @@ import org.springframework.util.StopWatch;
 
 import it.uniroma3.siw.model.Squadra;
 import it.uniroma3.siw.repository.SquadraRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SquadraService {
@@ -16,10 +16,12 @@ public class SquadraService {
 	@Autowired
 	private SquadraRepository squadraRepository;
 	
+	@Transactional(readOnly = true)
 	public Iterable<Squadra> findAll() {
 	    return squadraRepository.findAll();
 	}
 
+	@Transactional(readOnly = true)
 	public Optional<Squadra> findByNome(String nome) {
 		return this.squadraRepository.findByNome(nome);
 	}
@@ -41,12 +43,13 @@ public class SquadraService {
         this.squadraRepository.deleteById(id);
     }
     
+    @Transactional(readOnly = true)
     public boolean existsByNome(String nome) {
 		return squadraRepository.existsByNome(nome);
 	}
 	
     
-	@Transactional
+	@Transactional(readOnly = true)
 	public void testLazy(Long id) {
 		StopWatch sw = new StopWatch();
 		sw.start("LAZY");
@@ -56,7 +59,7 @@ public class SquadraService {
 		System.out.println(sw.prettyPrint());
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public void testEager(Long id) {
 		StopWatch sw = new StopWatch();
 		sw.start("EAGER");
@@ -66,7 +69,7 @@ public class SquadraService {
 		System.out.println(sw.prettyPrint());
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public void testJoinFetch(Long id) {
 		StopWatch sw = new StopWatch();
 		sw.start("JOIN FETCH");
@@ -75,7 +78,7 @@ public class SquadraService {
 		System.out.println(sw.prettyPrint());
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public void testEntityGraph(Long id) {
 		StopWatch sw = new StopWatch();
 		sw.start("ENTITY GRAPH");

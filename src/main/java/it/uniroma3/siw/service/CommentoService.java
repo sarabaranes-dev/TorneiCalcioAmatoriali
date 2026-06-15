@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import it.uniroma3.siw.model.Commento;
 import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.repository.CommentoRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CommentoService {
@@ -19,6 +19,7 @@ public class CommentoService {
 
 	
 	//Caso d'uso: visualizzazione commenti
+	@Transactional(readOnly = true)
 	public Iterable<Commento> findAll() {
 		return commentoRepository.findAll();
 	}

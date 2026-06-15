@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.repository.UtenteRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UtenteService {
@@ -23,7 +24,7 @@ public class UtenteService {
      * @param id the id of the User to retrieve from the DB
      * @return the retrieved User, or null if no User with the passed ID could be found in the DB
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public Utente getUtente(Long id) {
         Optional<Utente> risultato = this.utenteRepository.findById(id);
         return risultato.orElse(null);
@@ -45,7 +46,7 @@ public class UtenteService {
      * This method retrieves all Users from the DB.
      * @return a List with all the retrieved Users
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Utente> getAllUtenti() {
         List<Utente> risultato = new ArrayList<>();
         Iterable<Utente> iterable = this.utenteRepository.findAll();

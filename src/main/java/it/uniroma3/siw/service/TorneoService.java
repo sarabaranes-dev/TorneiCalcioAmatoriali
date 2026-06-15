@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 import it.uniroma3.siw.model.Partecipazione;
 import it.uniroma3.siw.model.Squadra;
@@ -11,7 +12,7 @@ import it.uniroma3.siw.model.Torneo;
 import it.uniroma3.siw.repository.PartecipazioneRepository;
 import it.uniroma3.siw.repository.SquadraRepository;
 import it.uniroma3.siw.repository.TorneoRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TorneoService {
@@ -30,30 +31,35 @@ public class TorneoService {
 	}
 	
 	// Caso d'uso: visualizzazione dell’elenco dei tornei
+    @Transactional(readOnly = true)
 	public Iterable<Torneo> findAll() {
 		return torneoRepository.findAll();
 	}
 	
 	// Caso d'uso: visualizzazione del dettaglio di un torneo
-	@Transactional
+	@Transactional(readOnly = true)
     public Torneo findById(Long id) {
 		return torneoRepository.findById(id).orElse(null);
 	}
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Torneo findByIdWithPartite(Long id) {
         return torneoRepository.findByIdWithPartiteAndSquadre(id).orElse(null);
     }
 	
 	// Caso d'uso: visualizzazione delle squadre partecipanti
-    @Transactional 
+    @Transactional(readOnly = true)
     public List<Squadra> findSquadreByTorneoId(Long idTorneo) {
     	return this.partecipazioneRepository.findSquadreInTorneo(idTorneo);
     }
     
     
     // Caso d'uso: visualizzazione della classifica del torneo
-    @Transactional
+    /**
+     * Categoria 3 delle slide: Generazione di un report globale coerente.
+     * Garantisce che la classifica non subisca variazioni (Phantoms/Non-repeatable reads) durante l'estrazione.
+     */
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
     public List<Partecipazione> getClassificaTorneo(Long idTorneo) {
     	return this.partecipazioneRepository.findClassificaByTorneoId(idTorneo);
         
@@ -71,7 +77,11 @@ public class TorneoService {
     }
     
     //// Caso d'uso: iscrizione squadra ad un torneo
-    @Transactional
+    /**
+     * Categoria 4 delle slide: Operazione logica di associazione. 
+     * Evita iscrizioni concorrenti che violerebbero i vincoli di integrità del torneo.
+     */
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void aggiungiSquadraATorneo(Long idTorneo, Long idSquadra) {
         Torneo torneo = this.torneoRepository.findById(idTorneo).orElse(null);
         Squadra squadra = this.squadraRepository.findById(idSquadra).orElse(null);

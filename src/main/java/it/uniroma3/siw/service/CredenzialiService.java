@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.model.Credenziali;
 import it.uniroma3.siw.repository.CredenzialiRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class CredenzialiService {
@@ -19,13 +20,13 @@ public class CredenzialiService {
 	 @Autowired
 	 protected CredenzialiRepository credenzialiRepository;
 
-	 @Transactional
+	 @Transactional(readOnly = true)
 	 public Credenziali getCredenziali(Long id) {
 		 Optional<Credenziali> risultato = this.credenzialiRepository.findById(id);
 		 return risultato.orElse(null);
 	 }
 
-	 @Transactional
+	@Transactional(readOnly = true)
 	 public Credenziali getCredenziali(String username) {       
 		 Optional<Credenziali> risultato = this.credenzialiRepository.findByUsername(username);
 	     return risultato.orElse(null);

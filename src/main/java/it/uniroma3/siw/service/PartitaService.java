@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 import it.uniroma3.siw.model.Partecipazione;
 import it.uniroma3.siw.model.Partita;
@@ -11,7 +12,8 @@ import it.uniroma3.siw.model.Squadra;
 import it.uniroma3.siw.model.Torneo;
 import it.uniroma3.siw.repository.PartecipazioneRepository;
 import it.uniroma3.siw.repository.PartitaRepository;
-import jakarta.transaction.Transactional;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PartitaService {
@@ -23,13 +25,19 @@ public class PartitaService {
     private PartecipazioneRepository partecipazioneRepository;
 
     // Caso d'uso: visualizzazione del calendario delle partite
+    @Transactional(readOnly = true)
     public Iterable<Partita> findAll() {
         return partitaRepository.findAll();
     }
     
-    // Caso d'uso: inserimento del risultato di una partita e aggiornamento classifica
+
     // Caso d'uso: inserimento/modifica del risultato di una partita e ricalcolo totale della classifica
-    @Transactional
+    /**
+     * CASO D'USO CRITICO: Lettura dello stato globale del torneo, 
+     * ricalcolo matematico dei punteggi e aggiornamento di più entità correlate.
+     * Richiede isolamento massimo per evitare disallineamenti della classifica in caso di concorrrenza.
+     */
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void aggiornaRisultato(Long idPartita, int goalsCasa, int goalsOspite) {
         Partita partita = this.partitaRepository.findById(idPartita).orElse(null);
         if (partita == null) return;
@@ -144,7 +152,7 @@ public class PartitaService {
     }
     
     // Caso d'uso: recupero di una singola partita tramite ID
-    @Transactional
+    @Transactional(readOnly = true)
     public Partita findById(Long id) {
         return partitaRepository.findById(id).orElse(null);
     }

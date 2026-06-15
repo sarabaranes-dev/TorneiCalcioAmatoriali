@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.model.Giocatore;
 import it.uniroma3.siw.repository.GiocatoreRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import org.springframework.data.domain.Pageable;
 
@@ -20,6 +21,7 @@ public class GiocatoreService {
     @Autowired
     private GiocatoreRepository giocatoreRepository;
     
+    @Transactional(readOnly = true)
     public List<Giocatore> findAll() {
         return giocatoreRepository.findAll();
     }
@@ -35,7 +37,7 @@ public class GiocatoreService {
         this.giocatoreRepository.deleteById(id);
     }
     
-    @Transactional 
+    @Transactional(readOnly = true)
     public Giocatore findById(Long id) {
         return giocatoreRepository.findById(id).get();
     }
@@ -44,7 +46,7 @@ public class GiocatoreService {
         return giocatoreRepository.existsByNomeAndCognomeAndDataNascita(nome, cognome, data);
     }
     
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<Giocatore> getGiocatoriCercatiEPaginati(String keyword, int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize); // Spring conta le pagine da 0
         
