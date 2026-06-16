@@ -46,13 +46,13 @@ public class CommentoService {
             this.commentoRepository.save(commento);
         }
     }
-	@Transactional 
+	@Transactional(readOnly = true)
 	public Commento findById(Long id) {
 		return commentoRepository.findById(id).orElse(null);
 	}
 	
 
-	@Transactional 
+	@Transactional(readOnly = true)
 	public List<Commento> findByPartitaCommentataId(Long partitaId) {
 		return this.commentoRepository.findCommentiInPartita(partitaId);
 	}
