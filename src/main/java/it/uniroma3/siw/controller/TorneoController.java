@@ -45,7 +45,6 @@ public class TorneoController {
      * "visualizzazione della classifica del torneo"
      */
 
-	@Transactional
 	@GetMapping("/tornei/{id}")
     public String getTorneo(@PathVariable("id") Long id, Model model) {
         model.addAttribute("torneo", this.torneoService.findByIdWithPartite(id));

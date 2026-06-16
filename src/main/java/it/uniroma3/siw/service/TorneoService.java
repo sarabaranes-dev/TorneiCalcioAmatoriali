@@ -67,10 +67,6 @@ public class TorneoService {
         this.torneoRepository.save(torneo);
     }
 
-    @Transactional
-    public void deleteTorneo(Long id) {
-        this.torneoRepository.deleteById(id);
-    }
     
     //// Caso d'uso: iscrizione squadra ad un torneo
     /** evita iscrizioni concorrenti che violerebbero i vincoli di integrità del torneo.
