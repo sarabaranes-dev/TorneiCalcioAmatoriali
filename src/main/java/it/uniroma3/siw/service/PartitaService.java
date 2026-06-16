@@ -167,7 +167,7 @@ public class PartitaService {
             torneo.getPartite().remove(partita);
         }
 
-        // AGGIORNAMENTO CLASSIFICA: Ricalcoliamo solo se la partita era stata effettivamente giocata
+        // AGGIORNAMENTO CLASSIFICA: ricalcolo solo se la partita era stata  giocata
         if (partita.getStato() != null && partita.getStato() == Partita.StatoPartita.PLAYED && torneo != null) {
             
             Partecipazione partCasa = this.partecipazioneRepository.findBySquadraAndTorneo(partita.getSquadraCasa(), torneo);

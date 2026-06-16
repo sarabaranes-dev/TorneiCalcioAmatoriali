@@ -78,7 +78,7 @@ public class SquadraController {
         this.squadraValidator.validate(squadra, bindingResult);
         if (!bindingResult.hasErrors()) {
             try {
-                // Passiamo la squadra e il file al service: pensa a tutto lui
+                //passo squadra e  file al service
                 this.squadraService.saveSquadra(squadra, fileLogo); 
                 return "redirect:/admin/squadre";
             } catch (IOException e) {
@@ -108,7 +108,7 @@ public class SquadraController {
                                   Model model) {
         if (!bindingResult.hasErrors()) {
             try {
-                // Passiamo anche qui squadra e file al service
+                //passo squadra e file al service
                 this.squadraService.saveSquadra(squadra, fileLogo);
                 return "redirect:/admin/squadre";
             } catch (IOException e) {

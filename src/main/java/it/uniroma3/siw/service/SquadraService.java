@@ -50,18 +50,18 @@ public class SquadraService {
     public void saveSquadra(Squadra squadra, MultipartFile fileLogo) throws IOException {
         
         if (fileLogo != null && !fileLogo.isEmpty()) {
-            // Conversione in byte centralizzata nel service
+            //conversione in byte
             squadra.setLogo(fileLogo.getBytes()); 
         } else if (squadra.getId() != null) {
-            // Se stiamo modificando (ID presente) e l'admin NON ha messo un nuovo file,
-            // recuperiamo dal database il vecchio logo per non perderlo
+            // se sto modificando e l'admin non ha messo un nuovo file,
+            // recupero dal database il vecchio logo
             Squadra vecchiaSquadra = this.squadraRepository.findById(squadra.getId()).orElse(null);
             if (vecchiaSquadra != null) {
                 squadra.setLogo(vecchiaSquadra.getLogo());
             }
         }
         
-        // Salvataggio effettivo
+        
         this.squadraRepository.save(squadra);
     }
 
