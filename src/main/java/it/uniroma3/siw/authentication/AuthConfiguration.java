@@ -61,7 +61,7 @@ public class AuthConfiguration {
                         
                         .requestMatchers(HttpMethod.GET, "/tornei", "/tornei/**","/squadre", "/squadre/**","/giocatori", "/giocatori/**", "/partite", "/partite/**").permitAll()
                         
-                        .requestMatchers(HttpMethod.GET, "/rest/**").permitAll() // Permetti a chiunque (compreso React) di leggere le partite
+                        .requestMatchers(HttpMethod.GET, "/rest/**").permitAll() 
 
                         
                         // solo admin può accedere al pannello di controllo

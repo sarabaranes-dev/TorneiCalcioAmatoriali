@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
+import it.uniroma3.siw.model.Giocatore;
 import it.uniroma3.siw.model.Squadra;
+import it.uniroma3.siw.repository.PartecipazioneRepository;
+import it.uniroma3.siw.repository.PartitaRepository;
 import it.uniroma3.siw.repository.SquadraRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +18,14 @@ public class SquadraService {
 
 	@Autowired
 	private SquadraRepository squadraRepository;
-	
+
+	@Autowired
+	private PartecipazioneRepository partecipazioneRepository;
+
+	@Autowired
+	private PartitaRepository partitaRepository;
+
+
 	@Transactional(readOnly = true)
 	public Iterable<Squadra> findAll() {
 	    return squadraRepository.findAll();
@@ -38,10 +48,37 @@ public class SquadraService {
         this.squadraRepository.save(squadra);
     }
 
-    @Transactional
-    public void deleteSquadra(Long id) {
-        this.squadraRepository.deleteById(id);
-    }
+
+	@Transactional
+	public void deleteSquadra(Long id) {
+		Squadra squadra = this.squadraRepository.findById(id).orElse(null);
+		if (squadra == null) return;
+
+		//elimino le partecipazioni ai tornei relative a questa squadra
+		if (squadra.getPartecipazioni() != null) {
+			this.partecipazioneRepository.deleteAll(squadra.getPartecipazioni());
+		}
+
+		//elimino partite in cui questa squadra ha giocato in casa
+		if (squadra.getPartiteInCasa() != null) {
+			this.partitaRepository.deleteAll(squadra.getPartiteInCasa());
+		}
+
+		//elimino  partite in cui questa squadra ha giocato in trasferta
+		if (squadra.getPartiteInTrasferta() != null) {
+			this.partitaRepository.deleteAll(squadra.getPartiteInTrasferta());
+		}
+
+		//i giocatori rimangono "svincolati" senza squadra
+		if (squadra.getGiocatori() != null) {
+			for (Giocatore g : squadra.getGiocatori()) {
+				g.setSquadra(null); 
+			}
+		}
+
+		//elimina la squadra
+		this.squadraRepository.delete(squadra);
+	}
     
     @Transactional(readOnly = true)
     public boolean existsByNome(String nome) {

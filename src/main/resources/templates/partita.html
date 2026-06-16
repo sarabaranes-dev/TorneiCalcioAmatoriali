@@ -52,7 +52,7 @@
         <h3>Informazioni Incontro</h3>
         <ul class="dettagli-lista">
             <li><strong>Data dell'evento:</strong> <span th:text="${#temporals.format(partita.dataEora, 'dd/MM/yyyy')}">25/05/2026</span></li>
-            <li><strong>Ora d'inizio:</strong> <span th:text="${#temporals.format(partita.dataEora, 'HH:mm')} + ' l.c.'">20:45</span></li>
+            <li><strong>Ora d'inizio:</strong> <span th:text="${#temporals.format(partita.dataEora, 'HH:mm')}">20:45</span></li>
             <li><strong>Stadio / Luogo:</strong> <span th:text="${partita.luogo}">Stadio Olimpico</span></li>
             <li>
                 <strong>Arbitro:</strong> 

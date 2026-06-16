@@ -146,11 +146,70 @@ public class PartitaService {
     }
 
     // Caso d'uso: eliminazione di una partita
-    @Transactional
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void deletePartita(Long id) {
-        this.partitaRepository.deleteById(id);
+        Partita partita = this.partitaRepository.findById(id).orElse(null);
+        if (partita == null) return;
+
+        Torneo torneo = partita.getTorneo();
+        
+        //rimuovo riferimento dalla lista in memoria per sicurezza
+        if (torneo != null && torneo.getPartite() != null) {
+            torneo.getPartite().remove(partita);
+        }
+
+        // AGGIORNAMENTO CLASSIFICA: Ricalcoliamo solo se la partita era stata effettivamente giocata
+        if (partita.getStato() != null && partita.getStato() == Partita.StatoPartita.PLAYED && torneo != null) {
+            
+            Partecipazione partCasa = this.partecipazioneRepository.findBySquadraAndTorneo(partita.getSquadraCasa(), torneo);
+            Partecipazione partOspite = this.partecipazioneRepository.findBySquadraAndTorneo(partita.getSquadraOspite(), torneo);
+
+            int puntiCasa = 0;
+            int puntiOspite = 0;
+
+            // scansiono partite rimanenti del torneo
+            if (torneo.getPartite() != null) {
+                for (Partita p : torneo.getPartite()) {
+                   
+                    if (p.getId().equals(partita.getId())) continue;
+
+                    if (p.getStato() != null && p.getStato() == Partita.StatoPartita.PLAYED) {
+                        
+                        //controllo match della squadra di casa
+                        if (p.getSquadraCasa() != null && p.getSquadraCasa().equals(partita.getSquadraCasa())) {
+                            if (p.getGoalsHome() > p.getGoalsAway()) puntiCasa += 3;
+                            else if (p.getGoalsHome() == p.getGoalsAway()) puntiCasa += 1;
+                        } else if (p.getSquadraOspite() != null && p.getSquadraOspite().equals(partita.getSquadraCasa())) {
+                            if (p.getGoalsAway() > p.getGoalsHome()) puntiCasa += 3;
+                            else if (p.getGoalsAway() == p.getGoalsHome()) puntiCasa += 1;
+                        }
+
+                        //controllo match della squadra ospite
+                        if (p.getSquadraCasa() != null && p.getSquadraCasa().equals(partita.getSquadraOspite())) {
+                            if (p.getGoalsHome() > p.getGoalsAway()) puntiOspite += 3;
+                            else if (p.getGoalsHome() == p.getGoalsAway()) puntiOspite += 1;
+                        } else if (p.getSquadraOspite() != null && p.getSquadraOspite().equals(partita.getSquadraOspite())) {
+                            if (p.getGoalsAway() > p.getGoalsHome()) puntiOspite += 3;
+                            else if (p.getGoalsAway() == p.getGoalsHome()) puntiOspite += 1;
+                        }
+                    }
+                }
+            }
+
+            if (partCasa != null) {
+                partCasa.setPunti(puntiCasa);
+                this.partecipazioneRepository.save(partCasa);
+            }
+            if (partOspite != null) {
+                partOspite.setPunti(puntiOspite);
+                this.partecipazioneRepository.save(partOspite);
+            }
+        }
+
+        this.partitaRepository.delete(partita);
     }
-    
+        
     // Caso d'uso: recupero di una singola partita
     @Transactional(readOnly = true)
     public Partita findById(Long id) {

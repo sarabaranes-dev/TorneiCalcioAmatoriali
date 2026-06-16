@@ -35,28 +35,34 @@
 
         <div th:if="${giocatori != null and !#lists.isEmpty(giocatori)}" class="table-container">
             <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Cognome</th>
-                        <th>Ruolo</th>
-                        <th>Data Nascita</th>
-                        <th>Azioni</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="giocatore : ${giocatori}">
-                        <td th:text="${giocatore.nome}">Nome</td>
-                        <td th:text="${giocatore.cognome}">Cognome</td>
-                        <td th:text="${giocatore.ruolo}">Ruolo</td>
-                        <td th:text="${#temporals.format(giocatore.dataNascita, 'dd/MM/yyyy')}">Data</td>
-                        <td>
-                            <a th:href="@{/admin/formModificaGiocatore/{id}(id=${giocatore.id})}"  class="btn btn-accent btn-sm">Modifica</a>
-                            <a th:href="@{/giocatori/{id}(id=${giocatore.id})}"  class="btn btn-accent btn-sm">Visualizza</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>Ruolo</th>
+                    <th>Squadra</th> <th>Data Nascita</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="giocatore : ${giocatori}">
+                    <td th:text="${giocatore.nome}">Nome</td>
+                    <td th:text="${giocatore.cognome}">Cognome</td>
+                    <td th:text="${giocatore.ruolo}">Ruolo</td>
+                    
+                    <td>
+                        <span th:if="${giocatore.squadra != null}" th:text="${giocatore.squadra.nome}">Nome Squadra</span>
+                        <span th:if="${giocatore.squadra == null}" class="text-muted" style="font-style: italic; color: #888;">Svincolato</span>
+                    </td>
+                    
+                    <td th:text="${#temporals.format(giocatore.dataNascita, 'dd/MM/yyyy')}">Data</td>
+                    <td>
+                        <a th:href="@{/admin/formModificaGiocatore/{id}(id=${giocatore.id})}"  class="btn btn-accent btn-sm">Modifica</a>
+                        <a th:href="@{/giocatori/{id}(id=${giocatore.id})}"  class="btn btn-accent btn-sm">Visualizza</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         </div>
 
         <!-- Paginazione -->

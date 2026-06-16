@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -54,7 +55,7 @@ public class Partita {
     @ManyToOne
     private Squadra squadraOspite;
 
-    @OneToMany(mappedBy="partitaCommentata")
+	@OneToMany(mappedBy="partitaCommentata", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JsonIgnore
     private List<Commento> commenti;
     

@@ -20,7 +20,7 @@ public class SiwTorneiCalcioApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		Long id = 1L;
+		Long id = 152L;
 
 		squadraService.testLazy(id);
 		squadraService.testEager(id);

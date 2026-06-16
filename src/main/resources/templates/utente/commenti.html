@@ -61,7 +61,7 @@
                             <p class="nota-modifica">Puoi modificare qui sotto il tuo commento:</p>
                             <form th:action="@{/utente/commenti/modifica/{id}(id=${commento.id})}" method="post" class="form-mini-modifica">
                                 <textarea name="testo" th:text="${commento.testo}" rows="2" required></textarea>
-                                <button type="submit" class="btn btn-sm">Aggiorna Messaggio</button>
+                                <button type="submit" class="btn btn-sm">Aggiorna Commento</button>
                             </form>
                         </div>
                         
