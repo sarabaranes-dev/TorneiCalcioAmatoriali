@@ -1,10 +1,12 @@
 package it.uniroma3.siw.service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Giocatore;
 import it.uniroma3.siw.model.Squadra;
@@ -37,14 +39,29 @@ public class SquadraService {
 	}
 	
 	//Caso d'uso: visualizzazione del dettaglio di una squadra (con giocatori)
-	@Transactional 
+	@Transactional(readOnly = true) 
 	public Squadra findById(Long id) {
 		return squadraRepository.findById(id).get();
 	}
 
 	// Caso d'uso: inserimento e modifica + eliminazione di una squadra
-    @Transactional
-    public void saveSquadra(Squadra squadra) {
+
+	@Transactional(rollbackFor = Exception.class)
+    public void saveSquadra(Squadra squadra, MultipartFile fileLogo) throws IOException {
+        
+        if (fileLogo != null && !fileLogo.isEmpty()) {
+            // Conversione in byte centralizzata nel service
+            squadra.setLogo(fileLogo.getBytes()); 
+        } else if (squadra.getId() != null) {
+            // Se stiamo modificando (ID presente) e l'admin NON ha messo un nuovo file,
+            // recuperiamo dal database il vecchio logo per non perderlo
+            Squadra vecchiaSquadra = this.squadraRepository.findById(squadra.getId()).orElse(null);
+            if (vecchiaSquadra != null) {
+                squadra.setLogo(vecchiaSquadra.getLogo());
+            }
+        }
+        
+        // Salvataggio effettivo
         this.squadraRepository.save(squadra);
     }
 

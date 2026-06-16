@@ -77,19 +77,11 @@ public class PartitaController {
     public String nuovaPartita(@Valid @ModelAttribute("partita") Partita partita, BindingResult bindingResult, Model model) {
         
         this.partitaValidator.validate(partita, bindingResult);
+        
         if (!bindingResult.hasErrors()) {
-            
-            //controllo sulla data
-            if (partita.getDataEora() != null && partita.getDataEora().isBefore(java.time.LocalDateTime.now())) {
-                //se la data inserita è nel passato, la partita è già stata giocata
-                partita.setStato(Partita.StatoPartita.PLAYED);
-            } else {
-                //altrimenti è in programma per il futuro
-                partita.setStato(Partita.StatoPartita.SCHEDULED);
-            }
-            
             this.partitaService.savePartita(partita); 
-            return "redirect:/partite/"+partita.getId();
+            
+            return "redirect:/partite/" + partita.getId();
         } else {
             model.addAttribute("squadre", this.squadraService.findAll());
             model.addAttribute("tornei", this.torneoService.findAll());
@@ -97,7 +89,7 @@ public class PartitaController {
             return "admin/formNuovaPartita.html"; 
         }
     }
-	
+
 	/**
      * CASO D'USO: "inserimento del risultato di una partita"
      */

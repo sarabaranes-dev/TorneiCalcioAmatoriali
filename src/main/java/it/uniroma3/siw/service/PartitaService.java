@@ -113,13 +113,21 @@ public class PartitaService {
     }
 
     // Caso d'uso: salvataggio di una partita con iscrizione automatica di sicurezza delle squadre
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void savePartita(Partita partita) {
-        //salvo regolarmente la partita nel database
+        
+        if (partita.getDataEora() != null && partita.getDataEora().isBefore(LocalDateTime.now())) {
+            // se la data inserita è nel passato, la partita è già stata giocata
+            partita.setStato(Partita.StatoPartita.PLAYED);
+        } else {
+            // altrimenti è in programma per il futuro
+            partita.setStato(Partita.StatoPartita.SCHEDULED);
+        }
+
         this.partitaRepository.save(partita);
 
         if (partita.getTorneo() != null) {
-            //controllo se la squadra di casa è già iscritta a questo torneo
+            // controllo se la squadra di casa è già iscritta a questo torneo
             if (partita.getSquadraCasa() != null) {
                 Partecipazione partCasa = this.partecipazioneRepository.findBySquadraAndTorneo(partita.getSquadraCasa(), partita.getTorneo());
                 if (partCasa == null) {
@@ -131,7 +139,7 @@ public class PartitaService {
                 }
             }
 
-            //stesso coontrollo per squadra ospite
+            // stesso controllo per squadra ospite
             if (partita.getSquadraOspite() != null) {
                 Partecipazione partOspite = this.partecipazioneRepository.findBySquadraAndTorneo(partita.getSquadraOspite(), partita.getTorneo());
                 if (partOspite == null) {

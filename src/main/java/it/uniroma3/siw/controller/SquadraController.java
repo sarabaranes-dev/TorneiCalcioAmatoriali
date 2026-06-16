@@ -78,11 +78,8 @@ public class SquadraController {
         this.squadraValidator.validate(squadra, bindingResult);
         if (!bindingResult.hasErrors()) {
             try {
-                if (fileLogo != null && !fileLogo.isEmpty()) {
-                    //converte in byte e assegna alla squadra
-                    squadra.setLogo(fileLogo.getBytes()); 
-                }
-                this.squadraService.saveSquadra(squadra); 
+                // Passiamo la squadra e il file al service: pensa a tutto lui
+                this.squadraService.saveSquadra(squadra, fileLogo); 
                 return "redirect:/admin/squadre";
             } catch (IOException e) {
                 model.addAttribute("erroreFile", "Errore nel caricamento del logo dell'immagine.");
@@ -111,23 +108,18 @@ public class SquadraController {
                                   Model model) {
         if (!bindingResult.hasErrors()) {
             try {
-                if (fileLogo != null && !fileLogo.isEmpty()) {
-                    squadra.setLogo(fileLogo.getBytes());
-                } else {
-                    //mantengo il vecchio logo se l'admin non ne ha caricato uno nuovo durante la modifica
-                    Squadra vecchiaSquadra = this.squadraService.findById(id);
-                    squadra.setLogo(vecchiaSquadra.getLogo());
-                }
-                this.squadraService.saveSquadra(squadra);
+                // Passiamo anche qui squadra e file al service
+                this.squadraService.saveSquadra(squadra, fileLogo);
                 return "redirect:/admin/squadre";
             } catch (IOException e) {
+                model.addAttribute("erroreFile", "Errore nel caricamento del logo dell'immagine.");
                 return "admin/formModificaSquadra.html";
             }
         } else {
             model.addAttribute("squadra", squadra);
             return "admin/formModificaSquadra.html";
         }
-	}
+    }
 
 	/**
      * CASO D'USO: "eliminazione di una squadra"
