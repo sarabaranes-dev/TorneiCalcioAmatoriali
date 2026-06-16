@@ -29,13 +29,11 @@ public class TorneoController {
 	
 	/**
      * CASO D'USO: "visualizzazione dell’elenco dei tornei"
-     * URL: http://localhost:8080/tornei
      */
 	@GetMapping("/tornei")
 	public String getTornei(Model model) {
-		// Prendo tutti i tornei dal database e li mette nel model con la chiave "tornei"
 		model.addAttribute("tornei",this.torneoService.findAll());
-		return "tornei.html"; // restituisce il file src/main/resources/templates/tornei.html
+		return "tornei.html"; 
 	}
 	
 
@@ -45,7 +43,6 @@ public class TorneoController {
      * "visualizzazione delle squadre partecipanti"
      * "visualizzazione del calendario delle partite"
      * "visualizzazione della classifica del torneo"
-     * URL: http://localhost:8080/tornei/1
      */
 
 	@Transactional
@@ -68,7 +65,7 @@ public class TorneoController {
 		return "admin/formNuovoTorneo.html";
 	}
 	
-	// Salva il nuovo torneo nel database
+	//salvo nuovo torneo nel database
 	
 	@GetMapping(value="/admin/tornei")
 	public String getTorneiAdmin(Model model) {

@@ -18,6 +18,7 @@ export interface Partita {
   goalsAway: number | null;
   stato: 'SCHEDULED' | 'PLAYED';
   torneo: Torneo;
-  squadraCasa: Squadra; // Mantiene il nome corretto del tuo DB
-  squadraOspite: Squadra; // Mantiene il nome corretto del tuo DB
+  squadraCasa: Squadra; 
+  squadraOspite: Squadra; 
+  
 }

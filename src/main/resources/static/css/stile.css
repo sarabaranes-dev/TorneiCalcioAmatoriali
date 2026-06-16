@@ -100,7 +100,7 @@ nav ul li a:hover {
    ========================================================================== */
 header {
     padding: 3rem 0;
-    text-align: left; /* Allineato a sinistra per un look moderno */
+    text-align: left;
 }
 
 header h1, header h2 {
@@ -188,7 +188,7 @@ table td {
 }
 
 table tbody tr:nth-child(even) {
-    background-color: #f8faf8; /* Effetto righe erba tagliata */
+    background-color: #f8faf8; 
 }
 
 table tbody tr:hover {
@@ -254,12 +254,12 @@ footer {
 
 /* Classi per limitare la larghezza delle schede (evitano che il form sia largo quanto tutta la pagina) */
 .form-card-small {
-    max-width: 35rem; /* Ideale per il Login */
+    max-width: 35rem;
     margin: 2rem auto;
 }
 
 .form-card-medium {
-    max-width: 55rem; /* Ideale per la Registrazione */
+    max-width: 55rem; 
     margin: 2rem auto;
 }
 
@@ -405,7 +405,7 @@ hr {
 
 
 /* ==========================================================================
-   STILE SEZIONE COMMENTI (LOOK SOCIAL / FORUM PROFESSIONALE)
+   STILE SEZIONE COMMENTI 
    ========================================================================== */
 
 /* Spaziatura tra i vari commenti della lista */
@@ -427,7 +427,7 @@ hr {
     flex-direction: column;
 }
 
-/* Intestazione del commento (Sfondo grigio chiarissimo, separa autore e data) */
+/* Intestazione del commento*/
 .commento-header-card {
     background-color: #f8fafc;
     padding: 0.75rem 1.25rem;
@@ -467,7 +467,7 @@ hr {
 .commento-testo {
     font-size: 1rem;
     color: var(--testo-scuro);
-    white-space: pre-line; /* Mantiene gli a capo digitati dall'utente */
+    white-space: pre-line;
 }
 
 /* Sezione in fondo al commento per le azioni (modifica o blocco) */

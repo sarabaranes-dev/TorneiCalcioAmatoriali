@@ -8,9 +8,7 @@ interface PartitaCardProps {
 }
 
 /**
- * Componente riutilizzabile per visualizzare una singola partita
- * È "stupido" - riceve i dati via props e li disegna
- * Non fa nessuna chiamata API
+ * mostra scheda partita di calcio
  */
 export const PartitaCard: React.FC<PartitaCardProps> = ({ partita }) => {
   const formatData = (dataEora: string | null) => {

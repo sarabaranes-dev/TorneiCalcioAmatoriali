@@ -38,12 +38,11 @@ public class AuthenticationController {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
-		// SE l'autenticazione è nulla OPPURE è un utente anonimo, mostra la index pubblica
 		if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
 			return "index.html";
 		}
 		else {      
-			// Ora siamo SICURI che c'è un utente loggato, quindi questo cast non fallirà mai
+			//utente loggato
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Credenziali credenziali = credenzialiService.getCredenziali(userDetails.getUsername());
 			
@@ -77,12 +76,11 @@ public class AuthenticationController {
 
 	@GetMapping(value = "/register") 
     public String showRegisterForm (Model model) {
-        // Creiamo l'oggetto Credenziali
         Credenziali credenziali = new Credenziali();
-        // Leghiamo l'Utente dentro le credenziali (relazione 1to1)
+        //lego utente dentro le credenziali
         credenziali.setUtente(new Utente());
         
-        // Passiamo solo l'oggetto "credenziali" che ora contiene tutto
+        //passo solo oggetto credenziali che contiene tutto
         model.addAttribute("credenziali", credenziali);
         return "formRegistrazioneUtente";
     }

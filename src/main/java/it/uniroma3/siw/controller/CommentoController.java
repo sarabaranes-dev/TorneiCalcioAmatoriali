@@ -26,7 +26,7 @@ public class CommentoController {
 	private CommentoService commentoService;
 
 	@Autowired
-	private CredenzialiService credenzialiService; // Ci serve per recuperare l'Utente partendo dall'username della sessione
+	private CredenzialiService credenzialiService;
 	
 	@Autowired
 	private PartitaService partitaService;
@@ -35,9 +35,9 @@ public class CommentoController {
 	
 	
 	/**
-	 * CASO D'USO: "visualizzazione commenti".
+	 * CASO D'USO: "visualizzazione commenti"
 	 */
-@GetMapping("/utente/partite/{partitaId}/commenti")
+	@GetMapping("/utente/partite/{partitaId}/commenti")
 	public String visualizzaCommenti(@PathVariable("partitaId") Long partitaId,
 							 @AuthenticationPrincipal UserDetails userDetails,
 							 Model model) {
@@ -47,15 +47,15 @@ public class CommentoController {
 		Credenziali credenzialiLoggato = this.credenzialiService.getCredenziali(userDetails.getUsername());
 		Long currentUserId = credenzialiLoggato.getUtente().getId();
 		
-		// Passiamo i dati alla pagina HTML
+		//passo dati alla pagina html
 		model.addAttribute("partita", partita);
 		model.addAttribute("commenti", listaCommenti);
 		model.addAttribute("currentUserId", currentUserId);
 		
-		// Prepariamo l'oggetto vuoto per il form di inserimento nella stessa pagina
+		//preparo oggetto vuoto per il form di inserimento
 		model.addAttribute("nuovoCommento", new Commento());
 		
-		return "utente/commenti.html"; // File HTML dedicato ai soli utenti registrati
+		return "utente/commenti.html";
 	}
 	
 	/**
@@ -71,7 +71,7 @@ public class CommentoController {
 		Credenziali credenzialiLoggato = this.credenzialiService.getCredenziali(userDetails.getUsername());
 		Utente autore = credenzialiLoggato.getUtente();
 		
-		//Collego il commento alla partita corretta
+		//collego commento alla partita corretta
 		commentoForm.setPartitaCommentata(partita);
 		
 		this.commentoService.inserisciCommento(commentoForm, autore);
@@ -86,19 +86,19 @@ public class CommentoController {
 	
 	@PostMapping("/utente/commenti/modifica/{id}")
     public String modificaCommento(@PathVariable("id") Long id, 
-                                   @RequestParam("testo") String nuovoTesto, // Cattura il name="testo" dall'HTML
+                                   @RequestParam("testo") String nuovoTesto,
                                    @AuthenticationPrincipal UserDetails userDetails) {
         
         Commento commentoOriginale = this.commentoService.findById(id);
         Credenziali credenzialiLoggato = this.credenzialiService.getCredenziali(userDetails.getUsername());
         
-        // Controllo fondamentale: sei tu l'autore?
+        //controllo autore
         if (commentoOriginale.getAutore() == null || commentoOriginale.getAutore().getId() == null
                 || !commentoOriginale.getAutore().getId().equals(credenzialiLoggato.getUtente().getId())) {
             return "accessoNegato.html"; 
         }
         
-        // Passiamo direttamente il testo estratto dal form
+        //passo il testo estratto dal form
         this.commentoService.modificaCommento(id, nuovoTesto, credenzialiLoggato.getUtente());
         
         return "redirect:/utente/partite/" + commentoOriginale.getPartitaCommentata().getId() + "/commenti";

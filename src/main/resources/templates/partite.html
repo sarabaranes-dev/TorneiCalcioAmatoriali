@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- NAVBAR: Uniformata al resto del sistema fluido -->
+
     <nav>
         <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
         <ul>
@@ -16,13 +16,13 @@
         </ul>
     </nav>
 
-    <!-- HEADER: Rimosso il vecchio main container e impostato header esterno -->
+
     <header>
         <h1>Calendario Generale delle Partite</h1>
         <p>Consulta tutti i match in programma nei vari tornei, i luoghi degli incontri e i risultati finali in tempo reale.</p>
     </header>
 
-    <!-- SECTION: Layout fluido al 95% -->
+
     <section>
         <div th:if="${partite == null or partite.isEmpty()}" class="info-empty">
             Nessun match programmato a sistema al momento.
@@ -48,20 +48,20 @@
                         <span th:text="${partita.squadraOspite.nome}">Squadra Ospite</span>
                     </td>
                     <td>
-                        <!-- Badge dinamici coerenti per i risultati -->
+                      
                         <span th:if="${partita.stato != null and partita.stato.name() == 'PLAYED'}" 
                               th:text="${partita.goalsHome + ' - ' + partita.goalsAway}" class="risultato-finale">2 - 1</span>
                         <span th:unless="${partita.stato != null and partita.stato.name() == 'PLAYED'}" class="badge-next">Da Giocare</span>
                     </td>
                     <td style="text-align: right;">
-                        <!-- BOTTONE VERDE PICCOLO: Usa la nuova classe combinata -->
+                      
                         <a th:href="@{/partite/{id}(id=${partita.id})}" class="btn btn-sm">Dettagli Match</a>
                     </td>
                 </tr>
             </tbody>
         </table>
         
-        <!-- Bottone di ritorno verde classico -->
+    
         <a th:href="@{/}" class="btn btn-back">Torna alla Home</a>
     </section>
 

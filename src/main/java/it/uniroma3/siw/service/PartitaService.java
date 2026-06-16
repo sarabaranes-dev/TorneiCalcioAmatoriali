@@ -31,18 +31,18 @@ public class PartitaService {
     }
     
 
-    // Caso d'uso: inserimento/modifica del risultato di una partita e ricalcolo totale della classifica
+    // Caso d'uso: inserimento o modifica del risultato di una partita e ricalcolo totale della classifica
     /**
-     * CASO D'USO CRITICO: Lettura dello stato globale del torneo, 
+     * lettura dello stato globale del torneo, 
      * ricalcolo matematico dei punteggi e aggiornamento di più entità correlate.
-     * Richiede isolamento massimo per evitare disallineamenti della classifica in caso di concorrrenza.
+     * isolamento massimo per evitare disallineamenti della classifica in caso di concorrrenza.
      */
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void aggiornaRisultato(Long idPartita, int goalsCasa, int goalsOspite) {
         Partita partita = this.partitaRepository.findById(idPartita).orElse(null);
         if (partita == null) return;
 
-        // 1. Aggiorno i gol e lo stato della partita corrente
+        //aggiorno goal e stato della partita corrente
         partita.setGoalsHome(goalsCasa);
         partita.setGoalsAway(goalsOspite);
         partita.setStato(Partita.StatoPartita.PLAYED);
@@ -51,11 +51,11 @@ public class PartitaService {
         Torneo torneo = partita.getTorneo();
         if (torneo == null) return;
 
-        // 2. Recupero le partecipazioni delle due squadre per questo torneo
+        //recupero le partecipazioni delle due squadre per questo torneo
         Partecipazione partCasa = this.partecipazioneRepository.findBySquadraAndTorneo(partita.getSquadraCasa(), torneo);
         Partecipazione partOspite = this.partecipazioneRepository.findBySquadraAndTorneo(partita.getSquadraOspite(), torneo);
 
-        // Se le partecipazioni non esistevano (es. partite vecchie nate senza iscrizione), le creiamo al volo
+        // se le partecipazioni non esistevano le creo
         if (partCasa == null && partita.getSquadraCasa() != null) {
             partCasa = new Partecipazione();
             partCasa.setTorneo(torneo);
@@ -71,16 +71,16 @@ public class PartitaService {
             this.partecipazioneRepository.save(partOspite);
         }
 
-        // 3. RICALCOLO TOTALE: Scorriamo tutte le partite del torneo per calcolare i punti reali
+        //scorro tutte le partite del torneo per calcolare i punti reali
         int puntiCasa = 0;
         int puntiOspite = 0;
 
         if (torneo.getPartite() != null) {
             for (Partita p : torneo.getPartite()) { 
-                // Consideriamo solo i match effettivamente giocati
+                //considero solo i match effettivamente giocati
                 if (p.getStato() != null && p.getStato().name().equals("PLAYED")) {
                     
-                    // Controllo i match della Squadra di Casa corrente
+                    //controllo i match della squadra di casa
                     if (p.getSquadraCasa() != null && p.getSquadraCasa().equals(partita.getSquadraCasa())) {
                         if (p.getGoalsHome() > p.getGoalsAway()) puntiCasa += 3;
                         else if (p.getGoalsHome() == p.getGoalsAway()) puntiCasa += 1;
@@ -89,7 +89,7 @@ public class PartitaService {
                         else if (p.getGoalsAway() == p.getGoalsHome()) puntiCasa += 1;
                     }
 
-                    // Controllo i match della Squadra Ospite corrente
+                    //controllo i match della squadra ospite
                     if (p.getSquadraCasa() != null && p.getSquadraCasa().equals(partita.getSquadraOspite())) {
                         if (p.getGoalsHome() > p.getGoalsAway()) puntiOspite += 3;
                         else if (p.getGoalsHome() == p.getGoalsAway()) puntiOspite += 1;
@@ -101,7 +101,7 @@ public class PartitaService {
             }
         }
 
-        // 4. Salvo i punti aggiornati e definitivi nel database
+        // salvo i punti aggiornati nel database
         if (partCasa != null) {
             partCasa.setPunti(puntiCasa);
             this.partecipazioneRepository.save(partCasa);
@@ -115,11 +115,11 @@ public class PartitaService {
     // Caso d'uso: salvataggio di una partita con iscrizione automatica di sicurezza delle squadre
     @Transactional
     public void savePartita(Partita partita) {
-        // Salvo regolarmente la partita nel database
+        //salvo regolarmente la partita nel database
         this.partitaRepository.save(partita);
 
         if (partita.getTorneo() != null) {
-            // Controllo se la Squadra di Casa è già iscritta a questo torneo
+            //controllo se la squadra di casa è già iscritta a questo torneo
             if (partita.getSquadraCasa() != null) {
                 Partecipazione partCasa = this.partecipazioneRepository.findBySquadraAndTorneo(partita.getSquadraCasa(), partita.getTorneo());
                 if (partCasa == null) {
@@ -131,7 +131,7 @@ public class PartitaService {
                 }
             }
 
-            // Controllo se la Squadra Ospite è già iscritta a questo torneo
+            //stesso coontrollo per squadra ospite
             if (partita.getSquadraOspite() != null) {
                 Partecipazione partOspite = this.partecipazioneRepository.findBySquadraAndTorneo(partita.getSquadraOspite(), partita.getTorneo());
                 if (partOspite == null) {
@@ -151,13 +151,13 @@ public class PartitaService {
         this.partitaRepository.deleteById(id);
     }
     
-    // Caso d'uso: recupero di una singola partita tramite ID
+    // Caso d'uso: recupero di una singola partita
     @Transactional(readOnly = true)
     public Partita findById(Long id) {
         return partitaRepository.findById(id).orElse(null);
     }
 
-    // Validazione: controlla se una partita identica esiste già
+    //controlla se una partita identica esiste già
     public boolean existsByTorneoAndSquadraCasaAndSquadraOspiteAndDataEora(Torneo torneo, Squadra squadraCasa, Squadra squadraOspite, LocalDateTime dataEora) {
         return partitaRepository.existsByTorneoAndSquadraCasaAndSquadraOspiteAndDataEora(torneo, squadraCasa, squadraOspite, dataEora);
     }

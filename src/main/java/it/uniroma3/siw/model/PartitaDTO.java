@@ -8,12 +8,11 @@ public class PartitaDTO {
     private String dataEora;
     private String stato;
     
-    // Invece di semplici stringhe, usiamo dei mini-oggetti "finti" per React
+    //invece di stringhe, uso dei mini-oggetti "finti" per React
     private SottoOggettoDTO torneo;
-    private SottoOggettoDTO squadraCasa; // Corrisponde a partita.squadraCasa nel JSON
-    private SottoOggettoDTO squadraOspite; // Corrisponde a partita.squadraOspite nel JSON
+    private SottoOggettoDTO squadraCasa; 
+    private SottoOggettoDTO squadraOspite;
 
-    // Costruttore
     public PartitaDTO(Partita partita) {
         this.id = partita.getId();
         this.luogo = partita.getLuogo();
@@ -22,7 +21,7 @@ public class PartitaDTO {
         this.dataEora = partita.getDataEora() != null ? partita.getDataEora().toString() : null;
         this.stato = partita.getStato() != null ? partita.getStato().toString() : null;
         
-        // Ricostruiamo la struttura ad albero leggera pulita dai loop
+      
         if (partita.getTorneo() != null) {
             this.torneo = new SottoOggettoDTO(partita.getTorneo().getId(), partita.getTorneo().getNome());
         }
@@ -35,7 +34,6 @@ public class PartitaDTO {
     }
 
     // --- CLASSE INTERNA DI APPOGGIO ---
-    // Serve per generare al volo i mini-oggetti {id, nome} che piacciono a React
     public static class SottoOggettoDTO {
         private Long id;
         private String nome;

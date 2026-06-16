@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. CONFIGURAZIONE TEMA - IMPORTATO DA THYMELEAF
+   1. CONFIGURAZIONE TEMA
    ========================================================================== */
 :root {
     --verde-calcio: #1a7c3a;
@@ -18,7 +18,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap');
 
 /* ==========================================================================
-   2. STILI COMPONENTI DI BASE (BOTTONI COPIATI DA THYMELEAF)
+   2. STILI COMPONENTI DI BASE 
    ========================================================================== */
 .btn {
     display: inline-block;
@@ -58,7 +58,6 @@
     box-shadow: none !important;
 }
 
-/* Contenitore del bottone Torna alla Home */
 .back-home-container {
     margin-bottom: 1.5rem;
     text-align: left;
@@ -202,13 +201,12 @@
     letter-spacing: 1px;
 }
 
-/* Correzione Layout del Footer */
 .partita-footer {
     background-color: #fafafa;
     padding: 0.75rem 1.5rem;
     border-top: 1px solid var(--bordo);
     display: flex;
-    justify-content: space-between; /* Spinge lo stadio a sinistra e il bottone a destra */
+    justify-content: space-between;
     align-items: center;
 }
 

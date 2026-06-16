@@ -24,7 +24,7 @@ public class GiocatoreValidator implements Validator {
         //controllo nome, cognome, data di nascita 
         if (giocatore.getNome() != null && giocatore.getCognome() != null && giocatore.getDataNascita() != null 
                 && giocatoreService.existsByNomeAndCognomeAndDataNascita(giocatore.getNome(), giocatore.getCognome(), giocatore.getDataNascita())) {
-            errors.reject("giocatore.duplicate"); // Cambiata stringa di errore
+            errors.reject("giocatore.duplicate"); 
         }
     }
 }

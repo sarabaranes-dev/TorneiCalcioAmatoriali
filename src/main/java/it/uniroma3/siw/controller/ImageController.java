@@ -22,7 +22,7 @@ public class ImageController {
         
         if (squadra != null && squadra.getLogo() != null && squadra.getLogo().length > 0) {
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Funziona benissimo anche per PNG
+                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") 
                     .body(squadra.getLogo());
         }
         return ResponseEntity.notFound().build();

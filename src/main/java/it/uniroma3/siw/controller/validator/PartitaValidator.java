@@ -24,7 +24,7 @@ public class PartitaValidator implements Validator {
 	public void validate(Object o, Errors errors) {
 		Partita partita = (Partita) o;
 		
-		// Verifico che l'admin abbia selezionato tutti i dati obbligatori nel form
+		//verifica che l'admin abbia selezionato tutti i dati obbligatori nel form
 		if (partita.getTorneo() != null && partita.getSquadraCasa() != null 
 				&& partita.getSquadraOspite() != null && partita.getDataEora() != null) {
 			

@@ -9,13 +9,10 @@ const THYMELEAF_URL = 'http://localhost:8080';
 /**
  * Pagina principale per la gestione delle partite
  * 
- * Responsabilità:
  * 1. Chiama il service per recuperare i dati
- * 2. Gestisce lo stato (partite, filtro)
+ * 2. Gestisce lo stato (filtro)
  * 3. Filtra i dati in base allo stato selezionato
  * 4. Passa i dati ai componenti per farli disegnare
- * 
- * È il "direttore d'orchestra" della dashboard
  */
 export function GestionePartitePage() {
   const [partite, setPartite] = useState<Partita[]>([]);
@@ -59,10 +56,10 @@ export function GestionePartitePage() {
 
       <h1 className="dashboard-title">Dashboard Torneo</h1>
       <p style={{ textAlign: 'center', color: '#666' }}>
-        Calendario dinamico integrato via REST con la piattaforma.
+        Calendario
       </p>
 
-      {/* Sezione filtri */}
+      {/*filtri */}
       <div className="filter-container">
         <FilterButton
           label="Tutte"

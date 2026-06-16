@@ -11,10 +11,10 @@ import it.uniroma3.siw.model.Utente;
 
 public interface CommentoRepository extends CrudRepository<Commento, Long> {
 	
-	//Per visualizzare i commenti di una specifica partita
+	//visualizza i commenti di una specifica partita
     public List<Commento> findByPartitaCommentataId(Long id);
 
-    //Per visualizzare i commenti  di un autore specifico
+    //visualizza i commenti  di un autore specifico
     public List<Commento> findByAutore(Utente autore);
     
     //visualizza tutti i commenti di una partita

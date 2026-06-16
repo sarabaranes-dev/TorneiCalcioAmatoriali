@@ -55,10 +55,6 @@ public class TorneoService {
     
     
     // Caso d'uso: visualizzazione della classifica del torneo
-    /**
-     * Categoria 3 delle slide: Generazione di un report globale coerente.
-     * Garantisce che la classifica non subisca variazioni (Phantoms/Non-repeatable reads) durante l'estrazione.
-     */
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
     public List<Partecipazione> getClassificaTorneo(Long idTorneo) {
     	return this.partecipazioneRepository.findClassificaByTorneoId(idTorneo);
@@ -77,9 +73,7 @@ public class TorneoService {
     }
     
     //// Caso d'uso: iscrizione squadra ad un torneo
-    /**
-     * Categoria 4 delle slide: Operazione logica di associazione. 
-     * Evita iscrizioni concorrenti che violerebbero i vincoli di integrità del torneo.
+    /** evita iscrizioni concorrenti che violerebbero i vincoli di integrità del torneo.
      */
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void aggiungiSquadraATorneo(Long idTorneo, Long idSquadra) {

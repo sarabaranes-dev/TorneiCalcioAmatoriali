@@ -29,11 +29,10 @@ public class SquadraController {
 	@Autowired
 	private SquadraValidator squadraValidator;
 	
-/*FUNZIONALITA PUBBLICHE*/
+    /*FUNZIONALITA PUBBLICHE*/
 	
 	/**
-     * CASO D'USO: "visualizzazione del dettaglio di una squadra (con giocatori)"
-     * URL: http://localhost:8080/squadre
+     * CASO D'USO: "visualizzazione delle squadre"
      */
 	@GetMapping("/squadre")
 	public String getSquadre(Model model) {
@@ -43,7 +42,6 @@ public class SquadraController {
 	
 	/**
      * CASO D'USO: "visualizzazione del dettaglio di una squadra (con giocatori)"
-     * URL: http://localhost:8080/squadre/1
      */
 	@GetMapping("/squadre/{id}")
 	public String getSquadra(@PathVariable("id") Long id, Model model) {
@@ -52,7 +50,7 @@ public class SquadraController {
 	}
 	
 	
-/*FUNZIONALITA RISERVATE ALL'ADMIN*/
+    /*FUNZIONALITA RISERVATE ALL'ADMIN*/
 	
 	/**
      * CASO D'USO: "inserimento di una squadra"
@@ -64,7 +62,7 @@ public class SquadraController {
 		return "admin/formNuovaSquadra.html";
 	}
 	
-	// Salva la squadra nel database
+	//salvo la squadra nel database
 	
 	@GetMapping(value="/admin/squadre")
 	public String getSquadreAdmin(Model model) {
@@ -75,13 +73,14 @@ public class SquadraController {
 	@PostMapping("/admin/squadre")
     public String nuovaSquadra(@Valid @ModelAttribute("squadra") Squadra squadra, 
                                BindingResult bindingResult, 
-                               @RequestParam("fileLogo") MultipartFile fileLogo, // Cattura il file dal form
+                               @RequestParam("fileLogo") MultipartFile fileLogo, 
                                Model model) {
         this.squadraValidator.validate(squadra, bindingResult);
         if (!bindingResult.hasErrors()) {
             try {
                 if (fileLogo != null && !fileLogo.isEmpty()) {
-                    squadra.setLogo(fileLogo.getBytes()); // Converte in byte e assegna alla squadra
+                    //converte in byte e assegna alla squadra
+                    squadra.setLogo(fileLogo.getBytes()); 
                 }
                 this.squadraService.saveSquadra(squadra); 
                 return "redirect:/admin/squadre";
@@ -108,14 +107,14 @@ public class SquadraController {
     public String modificaSquadra(@PathVariable("id") Long id, 
                                   @Valid @ModelAttribute("squadra") Squadra squadra, 
                                   BindingResult bindingResult, 
-                                  @RequestParam("fileLogo") MultipartFile fileLogo, // Cattura il file anche in modifica
+                                  @RequestParam("fileLogo") MultipartFile fileLogo,
                                   Model model) {
         if (!bindingResult.hasErrors()) {
             try {
                 if (fileLogo != null && !fileLogo.isEmpty()) {
                     squadra.setLogo(fileLogo.getBytes());
                 } else {
-                    // Mantieni il vecchio logo se l'admin non ne ha caricato uno nuovo durante la modifica
+                    //mantengo il vecchio logo se l'admin non ne ha caricato uno nuovo durante la modifica
                     Squadra vecchiaSquadra = this.squadraService.findById(id);
                     squadra.setLogo(vecchiaSquadra.getLogo());
                 }

@@ -30,7 +30,7 @@ public class AuthConfiguration {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                // 2. CORRETTO: Tabelle e colonne in italiano come nel tuo database ('credenziali', 'ruolo')
+                
                 .authoritiesByUsernameQuery("SELECT username, ruolo FROM credenziali WHERE username=?")
                 .usersByUsernameQuery("SELECT username, password, 1 as enabled FROM credenziali WHERE username=?");
     }
@@ -51,36 +51,33 @@ public class AuthConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // 1. Permetti l'accesso alla rotta radice e a tutte le varianti della home
+                        //permetto accesso a..
                         .requestMatchers(HttpMethod.GET, "/", "/index", "/index.html").permitAll()
                         
-                        // 2. Permetti l'accesso a TUTTE le risorse statiche (CSS, JS, Immagini) e alla favicon corretta
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                         
-                        // 3. Permetti le rotte di registrazione e login
                         .requestMatchers("/register", "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         
-                        //4. FUNZIONALITÀ PUBBLICHE: Permetti a tutti di vedere
                         .requestMatchers(HttpMethod.GET, "/tornei", "/tornei/**","/squadre", "/squadre/**","/giocatori", "/giocatori/**", "/partite", "/partite/**").permitAll()
                         
                         .requestMatchers(HttpMethod.GET, "/rest/**").permitAll() // Permetti a chiunque (compreso React) di leggere le partite
 
                         
-                        // 4. Solo gli ADMIN possono accedere al pannello di controllo
+                        // solo admin può accedere al pannello di controllo
                         .requestMatchers("/admin/**").hasAnyAuthority(ADMIN_ROLE)
 
-                        // Qualsiasi altra richiesta richiede l'autenticazione
+                        //qualsiasi altra richiesta richiede l'autenticazione
                         .anyRequest().authenticated()
                 )
-                // Configurazione del FORM di LOGIN
+                //login form
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll()
                         .defaultSuccessUrl("/success", true) 
                         .failureUrl("/login?error=true")
                 )
-                // Configurazione del LOGOUT
+                //logout
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")

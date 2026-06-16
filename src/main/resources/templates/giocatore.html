@@ -37,7 +37,7 @@
             <li>
                 <strong>Squadra di appartenenza:</strong> 
                 <span th:if="${giocatore.squadra != null}">
-                    <!-- Convertito in un bottone dorato per accedere direttamente al club -->
+                   
                     <a th:href="@{/squadre/{id}(id=${giocatore.squadra.id})}" th:text="${giocatore.squadra.nome}" class="btn btn-accent">Nome Club</a>
                 </span>
                 <span th:unless="${giocatore.squadra != null}" class="svincolato">Attualmente Svincolato</span>

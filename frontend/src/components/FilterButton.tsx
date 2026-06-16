@@ -11,7 +11,6 @@ interface FilterButtonProps {
 }
 
 /**
- * Componente riutilizzabile per i bottoni di filtro
  * Riceve le props e disegna un bottone intelligente
  */
 export const FilterButton: React.FC<FilterButtonProps> = ({

@@ -45,14 +45,14 @@ public class GiocatoreController {
         model.addAttribute("totalPages", pageGiocatori.getTotalPages());
         model.addAttribute("keyword", keyword); 
         
-        return "giocatori"; // Corretto: senza .html
+        return "giocatori"; 
     }
     
 
     @GetMapping("/giocatori/{id}")
     public String getGiocatore(@PathVariable("id") Long id, Model model) {
         model.addAttribute("giocatore", this.giocatoreService.findById(id));
-        return "giocatore"; // Corretto: senza .html
+        return "giocatore"; 
     }
 
     /*FUNZIONALITA RISERVATE ALL'ADMIN*/
@@ -65,10 +65,10 @@ public class GiocatoreController {
     public String formNuovaSquadra(Model model) {
         model.addAttribute("giocatore", new Giocatore());
         model.addAttribute("squadre", this.squadraService.findAll());
-        return "admin/formNuovoGiocatore"; // Corretto: senza .html
+        return "admin/formNuovoGiocatore";
     }
     
-    // Salva il giocatore nel database
+    //salvo giocatore nel database
     @GetMapping(value="/admin/giocatori")
     public String getGiocatoriAdmin(@RequestParam(value = "keyword", required = false) String keyword,
                                      @RequestParam(value = "page", defaultValue = "1") int page,
@@ -81,7 +81,7 @@ public class GiocatoreController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pageGiocatori.getTotalPages());
         model.addAttribute("keyword", keyword);
-        return "admin/listaGiocatori"; // Corretto: senza .html
+        return "admin/listaGiocatori";
     }
 
     @PostMapping("/admin/giocatori")
@@ -90,7 +90,7 @@ public class GiocatoreController {
         this.giocatoreValidator.validate(giocatore, bindingResult);
         if (!bindingResult.hasErrors()) {
             this.giocatoreService.saveGiocatore(giocatore); 
-            return "redirect:/giocatori/" + giocatore.getId(); // I redirect rimangono invariati
+            return "redirect:/giocatori/" + giocatore.getId(); 
         } else {
             model.addAttribute("squadre", this.squadraService.findAll());
             return "admin/formNuovoGiocatore"; 

@@ -39,9 +39,8 @@ public class PartitaController {
 	/*FUNZIONALITA PUBBLICHE*/
 	
 	/**
-     * CASO D'USO: "visualizzazione del dettaglio di una squadra (con giocatori)"
-     * URL: http://localhost:8080/squadre
-     */
+	 * CASO D'USO: "Visualizzazione della lista di tutte le partite"
+	 */
 	@GetMapping("/partite")
 	public String getPartite(Model model) {
 		model.addAttribute("partite", this.partitaService.findAll());
@@ -49,9 +48,8 @@ public class PartitaController {
 	}
 	
 	/**
-     * CASO D'USO: "visualizzazione del dettaglio di una squadra (con giocatori)"
-     * URL: http://localhost:8080/squadre/1
-     */
+	 * CASO D'USO: "Visualizzazione del dettaglio di una singola partita"
+	 */
 	@GetMapping("/partite/{id}")
 	public String getPartita(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("partita", this.partitaService.findById(id));
@@ -74,19 +72,19 @@ public class PartitaController {
 		return "admin/formNuovaPartita.html";
 	}
 	
-	// Salva la nuova partita nel database
+	//salvo nuova partita nel database
 	@PostMapping("/admin/partite")
     public String nuovaPartita(@Valid @ModelAttribute("partita") Partita partita, BindingResult bindingResult, Model model) {
         
         this.partitaValidator.validate(partita, bindingResult);
         if (!bindingResult.hasErrors()) {
             
-            // CONTROLLO DINAMICO SULLA DATA
+            //controllo sulla data
             if (partita.getDataEora() != null && partita.getDataEora().isBefore(java.time.LocalDateTime.now())) {
-                // Se la data inserita è nel passato, la partita è già disputabile/giocata
+                //se la data inserita è nel passato, la partita è già stata giocata
                 partita.setStato(Partita.StatoPartita.PLAYED);
             } else {
-                // Altrimenti è in programma per il futuro
+                //altrimenti è in programma per il futuro
                 partita.setStato(Partita.StatoPartita.SCHEDULED);
             }
             
@@ -121,8 +119,6 @@ public class PartitaController {
      */
 	@PostMapping("/admin/salvaRisultato/{id}")
     public String salvaRisultato(@PathVariable("id") Long id, @ModelAttribute("partita") Partita partitaForm) {
-        // MODIFICA: Invece di fare il find e il save qui nel controller, 
-        // deleghiamo tutto al metodo transazionale del service che assegna anche i punti!
         this.partitaService.aggiornaRisultato(id, partitaForm.getGoalsHome(), partitaForm.getGoalsAway());
         
         return "redirect:/partite/" + id;
