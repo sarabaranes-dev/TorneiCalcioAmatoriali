@@ -63,6 +63,9 @@ public class AuthConfiguration {
                         
                         .requestMatchers(HttpMethod.GET, "/rest/**").permitAll() 
 
+                        // documentazione API (Swagger UI e OpenAPI)
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+
                         
                         // solo admin può accedere al pannello di controllo
                         .requestMatchers("/admin/**").hasAnyAuthority(ADMIN_ROLE)

@@ -1,0 +1,6 @@
+target/
+frontend/
+db/
+docs/
+.git/
+.DS_Store
