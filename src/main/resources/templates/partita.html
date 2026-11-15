@@ -8,13 +8,7 @@
 </head>
 <body>
 
-    <nav>
-        <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
-        <ul>
-            <li><a th:href="@{/}">Home</a></li>
-            <li><a href="http://localhost:5173">Calendario</a></li>
-        </ul>
-    </nav>
+    <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
     <header style="text-align: center; margin-top: 2rem;">
         <p style="font-size: 1.2rem; color: var(--verde-scuro); margin-bottom: 1.5rem;">
@@ -71,9 +65,7 @@
         </div>
     </section>
 
-    <footer>
-        <p>Progetto SIW Tornei di Calcio</p>
-    </footer>
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
 
 </body>
 </html>

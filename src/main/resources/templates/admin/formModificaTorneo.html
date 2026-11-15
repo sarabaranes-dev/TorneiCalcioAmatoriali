@@ -2,10 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifica Torneo - Area Admin</title>
     <link rel="stylesheet" th:href="@{/css/stile.css}" />
 </head>
 <body>
+
+    <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
     <header class="admin-header">
         <h1>Modifica Torneo</h1>
@@ -52,9 +55,7 @@
         </form>
     </main>
 
-    <footer>
-        <p class="Testo-footer">SIW Tornei Calcio</p>
-    </footer>
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
 
 </body>
 </html>

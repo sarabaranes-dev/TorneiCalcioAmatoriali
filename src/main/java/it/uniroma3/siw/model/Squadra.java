@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,8 +24,11 @@ public class Squadra {
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 private Long id;
 
+	@NotNull
 	private Integer annoFondazione;
+	@NotBlank
 	private String nome;
+	@NotBlank
 	private String citta;
 	
 	@Lob

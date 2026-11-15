@@ -35,21 +35,7 @@ public class AuthenticationController {
 
     @GetMapping(value = "/") 
 	public String index(Model model) {
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-			return "index.html";
-		}
-		else {      
-			//utente loggato
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			Credenziali credenziali = credenzialiService.getCredenziali(userDetails.getUsername());
-			
-			if (credenziali != null && credenziali.getRuolo().equals(Credenziali.ADMIN_ROLE)) {
-				return "admin/indexAdmin.html";
-			}
-		}
+		// la home pubblica e' uguale per tutti: l'admin raggiunge il pannello da "Area admin"
 		return "index.html";
 	}
         
@@ -90,6 +76,12 @@ public class AuthenticationController {
                  BindingResult credentialsBindingResult,
                  Model model) {
 
+        // username gia' usato: errore sul campo invece di un errore del database
+        if (credenziali.getUsername() != null
+                && this.credenzialiService.getCredenziali(credenziali.getUsername()) != null) {
+            credentialsBindingResult.rejectValue("username", "credenziali.duplicate");
+        }
+
         if (!credentialsBindingResult.hasErrors()) {
             
             Utente utente = credenziali.getUtente();
@@ -98,7 +90,7 @@ public class AuthenticationController {
             credenziali.setRuolo(Credenziali.USER_ROLE);
             this.credenzialiService.saveCredenziali(credenziali);
         
-            return "registrazioneAvvenuta";
+            return "redirect:/login?registrato";
         }
         
         return "formRegistrazioneUtente";

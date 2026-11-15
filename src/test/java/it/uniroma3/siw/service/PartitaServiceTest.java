@@ -117,6 +117,28 @@ class PartitaServiceTest {
     }
 
     @Test
+    void aggiornaRisultato_ignoresPlayedMatchesWithoutAScore() {
+        Torneo torneo = new Torneo();
+        Squadra a = squadra("A");
+        Squadra b = squadra("B");
+        // a match created with a past date is PLAYED but has no score yet
+        Partita senzaRisultato = partita(1L, torneo, a, b, null, null, StatoPartita.PLAYED);
+        Partita daAggiornare = partita(2L, torneo, b, a, null, null, StatoPartita.PLAYED);
+        torneo.setPartite(new ArrayList<>(List.of(senzaRisultato, daAggiornare)));
+
+        Partecipazione partA = partecipazione(torneo, a, 0);
+        Partecipazione partB = partecipazione(torneo, b, 0);
+        when(partitaRepository.findById(2L)).thenReturn(Optional.of(daAggiornare));
+        when(partecipazioneRepository.findBySquadraAndTorneo(a, torneo)).thenReturn(partA);
+        when(partecipazioneRepository.findBySquadraAndTorneo(b, torneo)).thenReturn(partB);
+
+        partitaService.aggiornaRisultato(2L, 2, 1);
+
+        assertEquals(0, partA.getPunti());
+        assertEquals(3, partB.getPunti());
+    }
+
+    @Test
     void aggiornaRisultato_unknownMatch_doesNothing() {
         when(partitaRepository.findById(99L)).thenReturn(Optional.empty());
 

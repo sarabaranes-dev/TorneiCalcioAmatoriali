@@ -8,13 +8,7 @@
 </head>
 <body>
 
-    <nav>
-        <h1><a th:href="@{/}">TorneiCalcio</a></h1>
-        <ul>
-            <li><a th:href="@{/}">Home</a></li>
-            <li><a th:href="@{/tornei}">Tornei</a></li>
-        </ul>
-    </nav>
+    <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
     <header>
         <h2 th:text="${torneo.nome}">Nome Torneo</h2>
@@ -87,9 +81,7 @@
         <a th:href="@{/tornei}" class="btn">Torna all'elenco tornei</a>
     </section>
 
-    <footer>
-        <p>Progetto SIW Tornei di Calcio</p>
-    </footer>
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
 
 </body>
 </html>

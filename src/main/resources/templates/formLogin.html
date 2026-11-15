@@ -8,12 +8,7 @@
 </head>
 <body>
 
-    <nav>
-        <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
-        <ul>
-            <li><a th:href="@{/}">Home</a></li>
-        </ul>
-    </nav>
+    <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
     <header>
         <h1>Accedi al Portale</h1>
@@ -21,8 +16,11 @@
     </header>
 
     <section class="form-card-small">
-        <div th:if="${param.error}" class="info-empty" style="border-left-color: #d32f2f; color: #d32f2f;">
-            Username o password errati!
+        <div th:if="${param.error}" class="alert alert-danger">
+            Username o password errati.
+        </div>
+        <div th:if="${param.registrato}" class="alert alert-success">
+            Registrazione completata: ora puoi accedere con il tuo username e la tua password.
         </div>
 
         <form th:action="@{/login}" method="POST">
@@ -44,9 +42,7 @@
         </div>
     </section>
 
-    <footer>
-        <p>Progetto SIW Tornei di Calcio</p>
-    </footer>
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
 
 </body>
 </html>

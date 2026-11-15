@@ -56,7 +56,7 @@ public class AuthConfiguration {
                         
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                         
-                        .requestMatchers("/register", "/login").permitAll()
+                        .requestMatchers("/register", "/login", "/error").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                         
                         .requestMatchers(HttpMethod.GET, "/tornei", "/tornei/**","/squadre", "/squadre/**","/giocatori", "/giocatori/**", "/partite", "/partite/**").permitAll()

@@ -77,8 +77,9 @@ public class PartitaService {
 
         if (torneo.getPartite() != null) {
             for (Partita p : torneo.getPartite()) { 
-                //considero solo i match effettivamente giocati
-                if (p.getStato() != null && p.getStato().name().equals("PLAYED")) {
+                //considero solo i match effettivamente giocati e con un risultato inserito
+                if (p.getStato() != null && p.getStato().name().equals("PLAYED")
+                        && p.getGoalsHome() != null && p.getGoalsAway() != null) {
                     
                     //controllo i match della squadra di casa
                     if (p.getSquadraCasa() != null && p.getSquadraCasa().equals(partita.getSquadraCasa())) {
@@ -182,7 +183,8 @@ public class PartitaService {
                    
                     if (p.getId().equals(partita.getId())) continue;
 
-                    if (p.getStato() != null && p.getStato() == Partita.StatoPartita.PLAYED) {
+                    if (p.getStato() != null && p.getStato() == Partita.StatoPartita.PLAYED
+                            && p.getGoalsHome() != null && p.getGoalsAway() != null) {
                         
                         //controllo match della squadra di casa
                         if (p.getSquadraCasa() != null && p.getSquadraCasa().equals(partita.getSquadraCasa())) {

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+    <!-- Barra di navigazione comune a tutte le pagine -->
+    <nav th:fragment="navbar" class="navbar">
+        <h1><a th:href="@{/}" class="nav-logo">&#9917; TorneiCalcio</a></h1>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/tornei}">Tornei</a></li>
+            <li><a th:href="@{/squadre}">Squadre</a></li>
+            <li><a th:href="@{/giocatori}">Giocatori</a></li>
+            <li><a th:href="@{/partite}">Partite</a></li>
+
+            <li sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{/admin/indexAdmin}" class="nav-admin">Area admin</a>
+            </li>
+
+            <li sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="btn btn-accent btn-sm">Accedi</a>
+            </li>
+            <li sec:authorize="isAnonymous()">
+                <a th:href="@{/register}">Registrati</a>
+            </li>
+
+            <li sec:authorize="isAuthenticated()" class="user-greeting">
+                Ciao, <strong sec:authentication="name">utente</strong>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/logout}" class="btn-logout">Esci</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Footer comune a tutte le pagine -->
+    <footer th:fragment="footer">
+        <p>TorneiCalcioAmatoriali &middot; Progetto di Sistemi Informativi su Web, Universit&agrave; Roma Tre</p>
+    </footer>
+
+</body>
+</html>

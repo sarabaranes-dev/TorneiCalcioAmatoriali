@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errore - TorneiCalcio</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+
+    <nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+    <header class="error-header">
+        <p class="error-code" th:text="${status}">404</p>
+        <h1 th:switch="${status}">
+            <span th:case="404">Pagina non trovata</span>
+            <span th:case="403">Accesso non consentito</span>
+            <span th:case="*">Si &egrave; verificato un errore</span>
+        </h1>
+        <p th:switch="${status}">
+            <span th:case="404">La pagina o l'elemento che cerchi non esiste, oppure &egrave; stato eliminato.</span>
+            <span th:case="403">Questa sezione &egrave; riservata agli amministratori.</span>
+            <span th:case="*">Qualcosa &egrave; andato storto. Riprova tra poco o torna alla home.</span>
+        </p>
+        <br/>
+        <a th:href="@{/}" class="btn">Torna alla Home</a>
+    </header>
+
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

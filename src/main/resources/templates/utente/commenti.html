@@ -2,20 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="'Commenti - ' + ${partita.squadraCasa.nome} + ' vs ' + ${partita.squadraOspite.nome}">Commenti Partita</title>
     <link rel="stylesheet" th:href="@{/css/stile.css}" />
 </head>
 <body>
 
-    <nav>
-        <div class="nav-container">
-            <h1><a th:href="@{/}" class="nav-logo">TorneiCalcio</a></h1>
-            <ul class="nav-links">
-                <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/partite}">Calendario</a></li>
-            </ul>
-        </div>
-    </nav>
+    <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
     <main class="container">
 
@@ -87,12 +80,9 @@
         </section>
 
         <br/>
-        <a href="javascript:history.back()" class="btn btn-sm">Torna Indietro</a>
     </main>
 
-    <footer>
-        <p>Progetto SIW Tornei di Calcio</p>
-    </footer>
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
 
 </body>
 </html>

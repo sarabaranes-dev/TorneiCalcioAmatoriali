@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +23,9 @@ public class Torneo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 	
+	@NotBlank
 	private String nome;
+	@NotNull
 	private Integer anno;
 	private String descrizione;
 	

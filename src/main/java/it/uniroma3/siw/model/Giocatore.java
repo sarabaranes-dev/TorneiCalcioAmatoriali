@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +22,9 @@ public class Giocatore {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+	@NotBlank
 	private String nome;
+	@NotBlank
 	private String cognome;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

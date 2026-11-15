@@ -13,6 +13,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -33,11 +35,13 @@ public class Partita {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+	@NotBlank
 	private String luogo;
 	private Integer goalsHome;
 	private Integer goalsAway;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @NotNull
     private LocalDateTime dataEora;
 	
 	@Enumerated(EnumType.STRING) 
