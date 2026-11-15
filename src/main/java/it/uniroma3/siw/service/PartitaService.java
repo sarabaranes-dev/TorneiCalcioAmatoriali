@@ -1,6 +1,7 @@
 package it.uniroma3.siw.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -220,6 +221,17 @@ public class PartitaService {
         this.partitaRepository.delete(partita);
     }
         
+    // Caso d'uso: partite di una squadra, per la pagina della squadra
+    @Transactional(readOnly = true)
+    public List<Partita> findBySquadra(Squadra squadra) {
+        return this.partitaRepository.findBySquadraCasaOrSquadraOspiteOrderByDataEoraAsc(squadra, squadra);
+    }
+
+    @Transactional(readOnly = true)
+    public long count() {
+        return this.partitaRepository.count();
+    }
+
     // Caso d'uso: recupero di una singola partita
     @Transactional(readOnly = true)
     public Partita findById(Long id) {

@@ -208,6 +208,10 @@ table tbody tr:hover {
     margin-top: 2rem;
 }
 
+section > .flex-container:first-child {
+    margin-top: 0;
+}
+
 .col {
     flex: 1 1 calc(50% - 1rem); /* Due colonne su desktop */
     min-width: 20rem;
@@ -215,6 +219,43 @@ table tbody tr:hover {
     padding: 1.5rem;
     border-radius: 0.5rem;
     border-bottom: 4px solid var(--verde-calcio);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.col:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ombra);
+    border-bottom-color: var(--giallo-coppa);
+}
+
+.col h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--verde-scuro);
+    font-size: 1.3rem;
+}
+
+.col p {
+    color: var(--testo-grigio);
+    flex-grow: 1; /* i bottoni restano allineati in basso */
+}
+
+.col .btn {
+    align-self: flex-start;
+}
+
+.col-conteggio {
+    align-self: flex-start;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--verde-calcio);
+    background: #e3f1e7;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
 }
 
 .info-empty {
@@ -673,7 +714,7 @@ main.container section {
     border-color: var(--verde-calcio);
 }
 
-section a:not(.btn) {
+section p a:not(.btn) {
     color: var(--verde-calcio);
     font-weight: 700;
 }
@@ -713,4 +754,295 @@ section a:not(.btn) {
     table { display: block; overflow-x: auto; }
     .tabellone-match { flex-direction: column; gap: 1rem !important; }
     .punteggio-cifre { font-size: 2rem; }
+}
+
+/* ==========================================================================
+   12. HOME, LOGHI, CLASSIFICA, SCHEDE
+   ========================================================================== */
+
+/* Etichetta sopra i titoli (es. "Edizione 2026") */
+.hero-etichetta {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #b45309;
+    margin-bottom: 0.5rem;
+}
+
+/* Griglia di schede cliccabili (squadre, rosa) */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1.25rem;
+}
+
+.card-grid-small {
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+}
+
+a.card-link {
+    display: block;
+    background: var(--sfondo-chiaro);
+    border: 1px solid var(--bordo);
+    border-bottom: 4px solid var(--verde-calcio);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    color: var(--testo-scuro);
+    font-weight: 400;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+a.card-link:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ombra);
+    border-bottom-color: var(--giallo-coppa);
+}
+
+.card-link h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--verde-scuro);
+    margin: 0.5rem 0;
+}
+
+.card-squadra {
+    text-align: center;
+}
+
+.card-giocatore {
+    display: flex !important;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem !important;
+}
+
+/* Loghi delle squadre */
+.team-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+.team-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.team-logo-iniziale {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--verde-calcio);
+    color: var(--bianco);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+.team-logo-sm { width: 1.8rem; height: 1.8rem; font-size: 0.8rem; }
+.team-logo-lg { width: 5rem; height: 5rem; font-size: 2rem; }
+.team-logo-xl { width: 7rem; height: 7rem; font-size: 3rem; }
+
+.squadra-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+a.squadra-link {
+    color: var(--testo-scuro) !important;
+    text-decoration: none;
+}
+
+a.squadra-link:hover span {
+    color: var(--verde-calcio);
+}
+
+.header-squadra {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Classifica */
+.tabella-classifica th,
+.tabella-classifica td {
+    text-align: center;
+    padding: 0.75rem 0.6rem;
+}
+
+.tabella-classifica th {
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.tabella-classifica th:nth-child(2),
+.tabella-classifica td:nth-child(2) {
+    text-align: left;
+}
+
+.tabella-classifica tbody tr:first-child td:first-child {
+    color: #b45309;
+    font-weight: 800;
+}
+
+.punti {
+    font-size: 1.1rem;
+    color: var(--verde-scuro);
+}
+
+/* Elenco partite (torneo, squadra) */
+.lista-partite {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+a.riga-partita {
+    display: grid;
+    grid-template-columns: 9rem 1fr 4.5rem 1fr 14rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--bordo);
+    border-radius: 0.6rem;
+    color: var(--testo-scuro) !important;
+    font-weight: 400 !important;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+a.riga-partita:hover {
+    background: #ecfdf5;
+    border-color: var(--verde-chiaro);
+}
+
+.riga-data, .riga-luogo {
+    font-size: 0.85rem;
+    color: var(--testo-grigio);
+}
+
+.riga-squadra {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 700;
+}
+
+.riga-squadra.casa {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.riga-risultato {
+    text-align: center;
+    background: var(--verde-scuro);
+    color: var(--giallo-coppa);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0;
+}
+
+.riga-risultato.da-giocare {
+    background: var(--sfondo-chiaro);
+    color: var(--testo-grigio);
+    font-weight: 700;
+}
+
+/* Dettaglio partita */
+.team-tabellone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 12rem;
+}
+
+.nome-squadra-tabellone {
+    font-size: 1.8rem !important;
+    color: var(--verde-scuro);
+    text-align: center;
+}
+
+/* Scheda giocatore */
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--verde-calcio), var(--verde-scuro));
+    color: var(--giallo-coppa);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.avatar-xl {
+    width: 8rem;
+    height: 8rem;
+    font-size: 2.8rem;
+}
+
+.badge-ruolo {
+    display: inline-block;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.15rem 0.6rem;
+    border-radius: 1rem;
+    margin-top: 0.25rem;
+}
+
+.scheda-giocatore {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.scheda-giocatore h1 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--verde-scuro);
+    font-size: 2.2rem;
+}
+
+.dati-griglia {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 1rem 2rem;
+    margin-top: 1.5rem;
+}
+
+.dati-griglia dt {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--testo-grigio);
+}
+
+.dati-griglia dd {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.link-indietro {
+    color: var(--verde-calcio);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+@media (max-width: 48rem) {
+    a.riga-partita { grid-template-columns: 1fr 3.5rem 1fr; }
+    .riga-data, .riga-luogo { grid-column: 1 / -1; text-align: center; }
+    .header-squadra { flex-direction: column; text-align: center; }
 }

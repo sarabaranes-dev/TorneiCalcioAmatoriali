@@ -22,6 +22,11 @@ public class GiocatoreService {
     private GiocatoreRepository giocatoreRepository;
     
     @Transactional(readOnly = true)
+    public long count() {
+        return this.giocatoreRepository.count();
+    }
+
+    @Transactional(readOnly = true)
     public List<Giocatore> findAll() {
         return giocatoreRepository.findAll();
     }

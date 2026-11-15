@@ -10,44 +10,51 @@
 
     <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
-    <header style="display: flex; align-items: center; gap: 20px;">
-        <div th:if="${squadra.logo != null}">
-            <img th:src="@{/squadre/{id}/logo(id=${squadra.id})}" alt="Logo Squadra" style="max-width: 100px; max-height: 100px; object-fit: contain; border: 1px solid #ccc; padding: 5px; background: white; border-radius: 8px;" />
-        </div>
+    <header class="header-squadra">
+        <span th:replace="~{fragments/layout :: logo(${squadra}, 'xl')}"></span>
         <div>
-            <h2 th:text="${squadra.nome}">Nome Squadra</h2>
-            <p><strong>Sede:</strong> <span th:text="${squadra.citta}">Roma</span> | <strong>Anno Fondazione:</strong> <span th:text="${squadra.annoFondazione}">1927</span></p>
+            <h1 th:text="${squadra.nome}">Nome Squadra</h1>
+            <p><span th:text="${squadra.citta}">Roma</span> &middot; fondata nel <span th:text="${squadra.annoFondazione}">2015</span></p>
         </div>
     </header>
 
     <section>
-        <h2>Giocatori</h2>
-        
-        <div th:if="${squadra.giocatori == null or squadra.giocatori.isEmpty()}" class="empty-state">
+        <h2>Rosa</h2>
+        <div th:if="${squadra.giocatori == null or squadra.giocatori.isEmpty()}" class="info-empty">
             Non ci sono giocatori tesserati per questa squadra al momento.
         </div>
-        
-        <table th:if="${squadra.giocatori != null and !squadra.giocatori.isEmpty()}">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Cognome</th>
-                    <th>Ruolo</th>
-                    <th class="text-right">Azione</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="giocatore : ${squadra.giocatori}">
-                    <td th:text="${giocatore.nome}">Nome</td>
-                    <td th:text="${giocatore.cognome}">Cognome</td>
-                    <td th:text="${giocatore.ruolo}">Ruolo</td>
-                    <td class="text-right">
-                        <a th:href="@{/giocatori/{id}(id=${giocatore.id})}" class="btn btn-accent">Scheda Tecnica</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="card-grid card-grid-small" th:if="${squadra.giocatori != null and !squadra.giocatori.isEmpty()}">
+            <a th:each="giocatore : ${squadra.giocatori}" th:href="@{/giocatori/{id}(id=${giocatore.id})}" class="card-link card-giocatore">
+                <span class="avatar" th:text="${#strings.substring(giocatore.nome, 0, 1) + #strings.substring(giocatore.cognome, 0, 1)}">LR</span>
+                <span>
+                    <strong th:text="${giocatore.nome + ' ' + giocatore.cognome}">Nome Cognome</strong><br/>
+                    <span class="badge-ruolo" th:text="${giocatore.ruolo}">Attaccante</span>
+                </span>
+            </a>
+        </div>
+    </section>
 
+    <section>
+        <h2>Partite</h2>
+        <div th:if="${partite == null or partite.isEmpty()}" class="info-empty">
+            Questa squadra non ha ancora partite in calendario.
+        </div>
+        <div class="lista-partite" th:if="${partite != null and !partite.isEmpty()}">
+            <a th:each="partita : ${partite}" th:href="@{/partite/{id}(id=${partita.id})}" class="riga-partita">
+                <span class="riga-data" th:text="${#temporals.format(partita.dataEora, 'dd/MM/yyyy HH:mm')}">Data</span>
+                <span class="riga-squadra casa">
+                    <span th:text="${partita.squadraCasa.nome}">Casa</span>
+                    <span th:replace="~{fragments/layout :: logo(${partita.squadraCasa}, 'sm')}"></span>
+                </span>
+                <span class="riga-risultato" th:if="${partita.stato != null and partita.stato.name() == 'PLAYED' and partita.goalsHome != null}" th:text="${partita.goalsHome + ' - ' + partita.goalsAway}">2 - 1</span>
+                <span class="riga-risultato da-giocare" th:unless="${partita.stato != null and partita.stato.name() == 'PLAYED' and partita.goalsHome != null}">vs</span>
+                <span class="riga-squadra">
+                    <span th:replace="~{fragments/layout :: logo(${partita.squadraOspite}, 'sm')}"></span>
+                    <span th:text="${partita.squadraOspite.nome}">Ospite</span>
+                </span>
+                <span class="riga-luogo" th:text="${partita.torneo.nome}">Luogo</span>
+            </a>
+        </div>
         <br/>
         <a th:href="@{/squadre}" class="btn">Torna all'elenco squadre</a>
     </section>

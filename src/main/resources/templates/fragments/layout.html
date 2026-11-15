@@ -32,6 +32,12 @@
         </ul>
     </nav>
 
+    <!-- Logo di una squadra: immagine caricata dall'admin oppure iniziale del nome -->
+    <span th:fragment="logo(squadra, dimensione)" th:class="'team-logo team-logo-' + ${dimensione}">
+        <img th:if="${squadra.logo != null}" th:src="@{/squadre/{id}/logo(id=${squadra.id})}" th:alt="'Logo ' + ${squadra.nome}" />
+        <span th:unless="${squadra.logo != null}" class="team-logo-iniziale" th:text="${#strings.substring(squadra.nome, 0, 1)}">S</span>
+    </span>
+
     <!-- Footer comune a tutte le pagine -->
     <footer th:fragment="footer">
         <p>TorneiCalcioAmatoriali &middot; Progetto di Sistemi Informativi su Web, Universit&agrave; Roma Tre</p>

@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import it.uniroma3.siw.model.Credenziali;
 import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.service.CredenzialiService;
+import it.uniroma3.siw.service.GiocatoreService;
+import it.uniroma3.siw.service.PartitaService;
+import it.uniroma3.siw.service.SquadraService;
+import it.uniroma3.siw.service.TorneoService;
 import it.uniroma3.siw.service.UtenteService;
 import jakarta.validation.Valid;
 
@@ -26,6 +30,18 @@ public class AuthenticationController {
 
     @Autowired
     private UtenteService utenteService;
+
+    @Autowired
+    private TorneoService torneoService;
+
+    @Autowired
+    private SquadraService squadraService;
+
+    @Autowired
+    private GiocatoreService giocatoreService;
+
+    @Autowired
+    private PartitaService partitaService;
     
     
     @GetMapping(value = "/login") 
@@ -35,6 +51,11 @@ public class AuthenticationController {
 
     @GetMapping(value = "/") 
 	public String index(Model model) {
+		// numeri mostrati nella home
+		model.addAttribute("numTornei", this.torneoService.count());
+		model.addAttribute("numSquadre", this.squadraService.count());
+		model.addAttribute("numGiocatori", this.giocatoreService.count());
+		model.addAttribute("numPartite", this.partitaService.count());
 		// la home pubblica e' uguale per tutti: l'admin raggiunge il pannello da "Area admin"
 		return "index.html";
 	}
@@ -45,9 +66,9 @@ public class AuthenticationController {
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Credenziali credenziali = credenzialiService.getCredenziali(userDetails.getUsername());
         if (credenziali.getRuolo().equals(Credenziali.ADMIN_ROLE)) {
-            return "admin/indexAdmin.html";
+            return "redirect:/admin/indexAdmin";
         }
-        return "index.html";
+        return "redirect:/";
     }
 
     @GetMapping(value = "/admin/indexAdmin")

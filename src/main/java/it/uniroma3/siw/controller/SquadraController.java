@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.controller.validator.SquadraValidator;
 import it.uniroma3.siw.model.Squadra;
+import it.uniroma3.siw.service.PartitaService;
 import it.uniroma3.siw.service.SquadraService;
 import jakarta.validation.Valid;
 
@@ -28,6 +29,9 @@ public class SquadraController {
 
 	@Autowired
 	private SquadraValidator squadraValidator;
+
+	@Autowired
+	private PartitaService partitaService;
 	
     /*FUNZIONALITA PUBBLICHE*/
 	
@@ -45,7 +49,9 @@ public class SquadraController {
      */
 	@GetMapping("/squadre/{id}")
 	public String getSquadra(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("squadra", this.squadraService.findById(id));
+		Squadra squadra = this.squadraService.findById(id);
+		model.addAttribute("squadra", squadra);
+		model.addAttribute("partite", this.partitaService.findBySquadra(squadra));
 		return "squadra.html";
 	}
 	

@@ -46,8 +46,11 @@ public class TorneoController {
 
 	@GetMapping("/tornei/{id}")
     public String getTorneo(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("torneo", this.torneoService.findByIdWithPartite(id));
-        model.addAttribute("classifica", this.torneoService.getClassificaTorneo(id));
+        Torneo torneo = this.torneoService.findByIdWithPartite(id);
+        if (torneo == null) throw new java.util.NoSuchElementException("Torneo non trovato");
+        model.addAttribute("torneo", torneo);
+        model.addAttribute("partite", this.torneoService.getPartiteOrdinate(torneo));
+        model.addAttribute("classifica", this.torneoService.getClassificaDettagliata(id));
         return "torneo.html";
     }
 	

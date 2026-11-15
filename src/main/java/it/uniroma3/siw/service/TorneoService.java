@@ -1,5 +1,10 @@
 package it.uniroma3.siw.service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 
 import it.uniroma3.siw.model.Partecipazione;
+import it.uniroma3.siw.model.Partita;
+import it.uniroma3.siw.model.RigaClassifica;
 import it.uniroma3.siw.model.Squadra;
 import it.uniroma3.siw.model.Torneo;
 import it.uniroma3.siw.repository.PartecipazioneRepository;
@@ -61,6 +68,47 @@ public class TorneoService {
         
     }
     
+    // Caso d'uso: classifica con giocate, vinte, pari, perse e gol.
+    // Ordine: punti, poi differenza reti, poi gol fatti.
+    @Transactional(readOnly = true)
+    public List<RigaClassifica> getClassificaDettagliata(Long idTorneo) {
+        Map<Squadra, RigaClassifica> righe = new LinkedHashMap<>();
+        for (Partecipazione p : this.partecipazioneRepository.findClassificaByTorneoId(idTorneo)) {
+            righe.put(p.getSquadra(), new RigaClassifica(p.getSquadra(), p.getPunti() != null ? p.getPunti() : 0));
+        }
+        Torneo torneo = this.torneoRepository.findByIdWithPartiteAndSquadre(idTorneo).orElse(null);
+        if (torneo != null && torneo.getPartite() != null) {
+            for (Partita partita : torneo.getPartite()) {
+                if (partita.getStato() != Partita.StatoPartita.PLAYED
+                        || partita.getGoalsHome() == null || partita.getGoalsAway() == null) continue;
+                RigaClassifica casa = righe.get(partita.getSquadraCasa());
+                RigaClassifica ospite = righe.get(partita.getSquadraOspite());
+                if (casa != null) casa.aggiungiRisultato(partita.getGoalsHome(), partita.getGoalsAway());
+                if (ospite != null) ospite.aggiungiRisultato(partita.getGoalsAway(), partita.getGoalsHome());
+            }
+        }
+        List<RigaClassifica> classifica = new ArrayList<>(righe.values());
+        classifica.sort(Comparator.comparingInt(RigaClassifica::getPunti)
+                .thenComparingInt(RigaClassifica::getDifferenzaReti)
+                .thenComparingInt(RigaClassifica::getGolFatti)
+                .reversed());
+        return classifica;
+    }
+
+    // Caso d'uso: calendario del torneo in ordine di data
+    @Transactional(readOnly = true)
+    public List<Partita> getPartiteOrdinate(Torneo torneo) {
+        List<Partita> partite = new ArrayList<>();
+        if (torneo != null && torneo.getPartite() != null) partite.addAll(torneo.getPartite());
+        partite.sort(Comparator.comparing(Partita::getDataEora, Comparator.nullsLast(Comparator.naturalOrder())));
+        return partite;
+    }
+
+    @Transactional(readOnly = true)
+    public long count() {
+        return this.torneoRepository.count();
+    }
+
     // Caso d'uso: creazione e modifica + eliminazione di un torneo
     @Transactional
     public void saveTorneo(Torneo torneo) {

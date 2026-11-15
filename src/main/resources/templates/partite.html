@@ -42,9 +42,13 @@
                     <td th:text="${partita.torneo.nome}">Nome Torneo</td>
                     <td th:text="${#temporals.format(partita.dataEora, 'dd/MM/yyyy HH:mm')}">25/05/2026 20:45</td>
                     <td>
-                        <span th:text="${partita.squadraCasa.nome}">Squadra Casa</span> 
-                        <strong>vs</strong> 
-                        <span th:text="${partita.squadraOspite.nome}">Squadra Ospite</span>
+                        <span class="squadra-link">
+                            <span th:replace="~{fragments/layout :: logo(${partita.squadraCasa}, 'sm')}"></span>
+                            <span th:text="${partita.squadraCasa.nome}">Squadra Casa</span>
+                            <strong>vs</strong>
+                            <span th:replace="~{fragments/layout :: logo(${partita.squadraOspite}, 'sm')}"></span>
+                            <span th:text="${partita.squadraOspite.nome}">Squadra Ospite</span>
+                        </span>
                     </td>
                     <td>
                       

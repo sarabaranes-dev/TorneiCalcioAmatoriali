@@ -11,38 +11,21 @@
     <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
     <header>
-        <h2>Squadre Registrate</h2>
-        <p>Seleziona un club per visualizzare la citta di provenienza, l'anno di fondazione e l'elenco completo dei giocatori.</p>
+        <h1>Squadre</h1>
+        <p>Scegli un club per vedere la rosa dei giocatori e le sue partite.</p>
     </header>
 
     <section>
-        <div th:if="${squadre == null or squadre.isEmpty()}" class="empty-state">
+        <div th:if="${squadre == null or squadre.isEmpty()}" class="info-empty">
             Nessuna squadra registrata al momento.
         </div>
-
-        <table th:if="${squadre != null and !squadre.isEmpty()}">
-            <thead>
-                <tr>
-                    <th>Logo</th> <th>Club</th>
-                    <th class="text-right">Azione</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="squadra : ${squadre}">
-                    <td>
-                        <img th:if="${squadra.logo != null}" th:src="@{/squadre/{id}/logo(id=${squadra.id})}" alt="Logo" style="width: 40px; height: 40px; object-fit: contain; border-radius: 4px;" />
-                        <span th:unless="${squadra.logo != null}" style="font-size: 0.8em; color: gray;">No Logo</span>
-                    </td>
-                    <td th:text="${squadra.nome}">Nome Squadra</td>
-                    <td class="text-right">
-                        <a th:href="@{/squadre/{id}(id=${squadra.id})}" class="btn btn-sm">Vedi Giocatori</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <br/>
-        <a th:href="@{/}" class="btn">Torna alla Home</a>
+        <div class="card-grid" th:if="${squadre != null and !squadre.isEmpty()}">
+            <a th:each="squadra : ${squadre}" th:href="@{/squadre/{id}(id=${squadra.id})}" class="card-link card-squadra">
+                <span th:replace="~{fragments/layout :: logo(${squadra}, 'lg')}"></span>
+                <h3 th:text="${squadra.nome}">Nome Squadra</h3>
+                <p><span th:text="${squadra.citta}">Roma</span> &middot; fondata nel <span th:text="${squadra.annoFondazione}">2015</span></p>
+            </a>
+        </div>
     </section>
 
     <footer th:replace="~{fragments/layout :: footer}"></footer>

@@ -17,7 +17,8 @@
         
         <div class="tabellone-match" style="display: flex; justify-content: center; align-items: center; gap: 3rem;">
             <div class="team-tabellone">
-                <h2 th:text="${partita.squadraCasa.nome}" style="font-size: 2.2rem; margin: 0;">Squadra Casa</h2>
+                <span th:replace="~{fragments/layout :: logo(${partita.squadraCasa}, 'lg')}"></span>
+                <h2 class="nome-squadra-tabellone" th:text="${partita.squadraCasa.nome}">Squadra Casa</h2>
             </div>
             
             <div class="score-tabellone">
@@ -32,7 +33,8 @@
             </div>
             
             <div class="team-tabellone">
-                <h2 th:text="${partita.squadraOspite.nome}" style="font-size: 2.2rem; margin: 0;">Squadra Ospite</h2>
+                <span th:replace="~{fragments/layout :: logo(${partita.squadraOspite}, 'lg')}"></span>
+                <h2 class="nome-squadra-tabellone" th:text="${partita.squadraOspite.nome}">Squadra Ospite</h2>
             </div>
         </div>
         

@@ -11,72 +11,81 @@
     <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
     <header>
-        <h2 th:text="${torneo.nome}">Nome Torneo</h2>
-        <p>Edizione: <span th:text="${torneo.anno}">2026</span></p>
-        <p th:text="${torneo.descrizione}">Descrizione dettagliata del torneo...</p>
+        <p class="hero-etichetta" th:text="'Edizione ' + ${torneo.anno}">Edizione 2026</p>
+        <h1 th:text="${torneo.nome}">Nome Torneo</h1>
+        <p th:text="${torneo.descrizione}">Descrizione del torneo</p>
     </header>
 
     <section>
         <h2>Classifica</h2>
-        
-        <div th:if="${classifica == null or classifica.isEmpty()}" class="empty-state">
+
+        <div th:if="${classifica == null or classifica.isEmpty()}" class="info-empty">
             Nessuna squadra iscritta a questo torneo. Classifica non disponibile.
         </div>
-        
-        <table th:if="${classifica != null and !classifica.isEmpty()}">
-            <thead>
-                <tr>
-                    <th>Pos</th>
-                    <th>Squadra</th>
-                    <th>Punti</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="partecipazione, classificaStat : ${classifica}">
-                    <td th:text="${classificaStat.count}">1</td>
-                    <td>
-                        <a th:href="@{/squadre/{id}(id=${partecipazione.squadra.id})}" th:text="${partecipazione.squadra.nome}" class="btn btn-sm">Nome Squadra</a>
-                    </td>
-                    <td><strong th:text="${partecipazione.punti}">0</strong></td>
-                </tr>
-            </tbody>
-        </table>
-        <p class="note-text">* La classifica si aggiorna automaticamente in base ai punti registrati.</p>
+
+        <div class="table-container" th:if="${classifica != null and !classifica.isEmpty()}">
+            <table class="tabella-classifica">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Squadra</th>
+                        <th>Giocate</th>
+                        <th>Vinte</th>
+                        <th>Pareggi</th>
+                        <th>Perse</th>
+                        <th>Gol fatti</th>
+                        <th>Gol subiti</th>
+                        <th>Diff. reti</th>
+                        <th>Punti</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="riga, stat : ${classifica}">
+                        <td th:text="${stat.count}">1</td>
+                        <td>
+                            <a th:href="@{/squadre/{id}(id=${riga.squadra.id})}" class="squadra-link">
+                                <span th:replace="~{fragments/layout :: logo(${riga.squadra}, 'sm')}"></span>
+                                <span th:text="${riga.squadra.nome}">Squadra</span>
+                            </a>
+                        </td>
+                        <td th:text="${riga.giocate}">0</td>
+                        <td th:text="${riga.vinte}">0</td>
+                        <td th:text="${riga.pareggiate}">0</td>
+                        <td th:text="${riga.perse}">0</td>
+                        <td th:text="${riga.golFatti}">0</td>
+                        <td th:text="${riga.golSubiti}">0</td>
+                        <td th:text="${riga.differenzaReti > 0 ? '+' + riga.differenzaReti : riga.differenzaReti}">0</td>
+                        <td><strong class="punti" th:text="${riga.punti}">0</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="hint">3 punti per la vittoria, 1 per il pareggio. A parit&agrave; di punti conta la differenza reti, poi i gol fatti.</p>
     </section>
 
     <section>
-        <h2>Calendario Match</h2>
-        
-        <div th:if="${torneo.partite == null or torneo.partite.isEmpty()}" class="empty-state">
+        <h2>Calendario</h2>
+
+        <div th:if="${partite == null or partite.isEmpty()}" class="info-empty">
             Non sono ancora state pianificate partite per questo torneo.
         </div>
-        
-        <table th:if="${torneo.partite != null and !torneo.partite.isEmpty()}">
-            <thead>
-                <tr>
-                    <th>Data e Ora</th>
-                    <th>Incontro</th>
-                    <th>Risultato</th>
-                    <th>Luogo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="partita : ${torneo.partite}">
-                    <td th:text="${#temporals.format(partita.dataEora, 'dd/MM/yyyy HH:mm')}">Data</td>
-                    <td>
-                        <span th:text="${partita.squadraCasa.nome}">Casa</span>
-                        <strong>vs</strong>
-                        <span th:text="${partita.squadraOspite.nome}">Ospite</span>
-                    </td>
-                    <td>
-                        <span th:if="${partita.stato != null and partita.stato.name() == 'PLAYED'}" th:text="${partita.goalsHome + ' - ' + partita.goalsAway}">2 - 1</span>
-                        <span th:unless="${partita.stato != null and partita.stato.name() == 'PLAYED'}" class="status-pill">Da giocare</span>
-                    </td>
-                    <td th:text="${partita.luogo}">Stadio</td>
-                </tr>
-            </tbody>
-        </table>
-        
+
+        <div class="lista-partite" th:if="${partite != null and !partite.isEmpty()}">
+            <a th:each="partita : ${partite}" th:href="@{/partite/{id}(id=${partita.id})}" class="riga-partita">
+                <span class="riga-data" th:text="${#temporals.format(partita.dataEora, 'dd/MM/yyyy HH:mm')}">Data</span>
+                <span class="riga-squadra casa">
+                    <span th:text="${partita.squadraCasa.nome}">Casa</span>
+                    <span th:replace="~{fragments/layout :: logo(${partita.squadraCasa}, 'sm')}"></span>
+                </span>
+                <span class="riga-risultato" th:if="${partita.stato != null and partita.stato.name() == 'PLAYED' and partita.goalsHome != null}" th:text="${partita.goalsHome + ' - ' + partita.goalsAway}">2 - 1</span>
+                <span class="riga-risultato da-giocare" th:unless="${partita.stato != null and partita.stato.name() == 'PLAYED' and partita.goalsHome != null}">vs</span>
+                <span class="riga-squadra">
+                    <span th:replace="~{fragments/layout :: logo(${partita.squadraOspite}, 'sm')}"></span>
+                    <span th:text="${partita.squadraOspite.nome}">Ospite</span>
+                </span>
+                <span class="riga-luogo" th:text="${partita.luogo}">Luogo</span>
+            </a>
+        </div>
         <br/>
         <a th:href="@{/tornei}" class="btn">Torna all'elenco tornei</a>
     </section>

@@ -16,41 +16,41 @@
     </header>
 
     <section>
-        
+
         <div class="flex-container">
-            
+
             <div class="col">
+                <span class="col-conteggio" th:text="${numTornei} + ' tornei'">2 tornei</span>
                 <h3>Tornei</h3>
                 <p>Visualizza l'elenco dei campionati attivi, le edizioni disponibili, i calendari specifici e le classifiche aggiornate.</p>
-                <br/>
                 <a th:href="@{/tornei}" class="btn">Esplora i Tornei</a>
             </div>
 
             <div class="col">
+                <span class="col-conteggio" th:text="${numSquadre} + ' squadre'">4 squadre</span>
                 <h3>Squadre</h3>
-                <p>Scopri i club calcistici partecipanti, la loro storia, le citta di provenienza e consulta le rose dei giocatori.</p>
-                <br/>
+                <p>Scopri i club calcistici partecipanti, la loro storia, le citt&agrave; di provenienza e consulta le rose dei giocatori.</p>
                 <a th:href="@{/squadre}" class="btn">Visualizza le Squadre</a>
             </div>
-            
+
         </div>
 
         <div class="flex-container">
-            
+
             <div class="col">
+                <span class="col-conteggio" th:text="${numPartite} + ' partite'">6 partite</span>
                 <h3>Calendario Match</h3>
-                <p>Resta aggiornato su tutte le partite in programma, i luoghi degli incontri e i risultati in tempo reale.</p>
-                <br/>
+                <p>Resta aggiornato su tutte le partite in programma, i luoghi degli incontri e i risultati delle partite giocate.</p>
                 <a th:href="@{/partite}" class="btn">Calendario Completo</a>
             </div>
 
             <div class="col">
+                <span class="col-conteggio" th:text="${numGiocatori} + ' giocatori'">16 giocatori</span>
                 <h3>Giocatori</h3>
-                <p>Consulta l'elenco completo dei calciatori registrati sulla piattaforma, i loro ruoli e le statistiche personali.</p>
-                <br/>
+                <p>Consulta l'elenco completo dei calciatori registrati sulla piattaforma, i loro ruoli e le squadre in cui giocano.</p>
                 <a th:href="@{/giocatori}" class="btn">Cerca Giocatori</a>
             </div>
-            
+
         </div>
 
     </section>

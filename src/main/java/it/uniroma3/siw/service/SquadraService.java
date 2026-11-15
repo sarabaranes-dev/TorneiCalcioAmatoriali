@@ -34,6 +34,11 @@ public class SquadraService {
 	}
 
 	@Transactional(readOnly = true)
+	public long count() {
+		return this.squadraRepository.count();
+	}
+
+	@Transactional(readOnly = true)
 	public Optional<Squadra> findByNome(String nome) {
 		return this.squadraRepository.findByNome(nome);
 	}
